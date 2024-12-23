@@ -1,4 +1,3 @@
-using System;
 using AppointmentManagement.Domain.Common;
 
 namespace AppointmentManagement.Domain.Entities
@@ -18,5 +17,10 @@ namespace AppointmentManagement.Domain.Entities
         public string Notes { get; set; }
         public bool ShowedUp { get; set; }
         public string BookingChannel { get; set; }
+
+        public Clinic Clinic { get; set; }
+        public Patient Patient { get; set; }
+        public AppointmentStatus Status { get; set; }
+
     }
 }

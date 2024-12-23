@@ -1,8 +1,6 @@
-using AppointmentManagement.Domain.Common;
-
 namespace AppointmentManagement.Domain.Entities
 {
-    public class Patient : AuditableEntity
+    public class Patient
     {
         public Guid Id { get; set; }
         public string FirstName { get; set; }
