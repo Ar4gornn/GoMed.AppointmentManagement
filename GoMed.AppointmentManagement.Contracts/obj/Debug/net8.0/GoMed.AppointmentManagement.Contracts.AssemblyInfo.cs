@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GoMed.AppointmentManagement.Contracts")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d41b509159b691fad0bb14a30df113334384120a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a0f53eb984e365166a27489932194e0697f8c470")]
 [assembly: System.Reflection.AssemblyProductAttribute("GoMed.AppointmentManagement.Contracts")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GoMed.AppointmentManagement.Contracts")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
