@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoMed.AppointmentManagement.Application", "GoMed.AppointmentManagement.Application\GoMed.AppointmentManagement.Application.csproj", "{0CEAEB5B-AE9C-4944-8584-E4F422DCA3E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoMed.AppointmentManagement.Contracts", "GoMed.AppointmentManagement.Contracts\GoMed.AppointmentManagement.Contracts.csproj", "{C6163B3D-1B54-4707-BB52-6389E8690E24}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoMed.AppointmentManagement.Domain", "GoMed.AppointmentManagement.Domain\GoMed.AppointmentManagement.Domain.csproj", "{162B9698-C6E8-436D-BE43-A061DA29EDBA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoMed.AppointmentManagement.Persistence", "GoMed.AppointmentManagement.Persistence\GoMed.AppointmentManagement.Persistence.csproj", "{309F41E8-E566-48E1-ACDF-5A9259E80F26}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoMed.AppointmentManagement.Services", "GoMed.AppointmentManagement.Services\GoMed.AppointmentManagement.Services.csproj", "{B2E07A73-A99A-4F52-BA25-CD171232295E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoMed.AppointmentManagement.WebApi", "GoMed.AppointmentManagement.WebApi\GoMed.AppointmentManagement.WebApi.csproj", "{9B900FFE-29F6-4DA6-BD77-FB3FF76EAE72}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0CEAEB5B-AE9C-4944-8584-E4F422DCA3E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CEAEB5B-AE9C-4944-8584-E4F422DCA3E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CEAEB5B-AE9C-4944-8584-E4F422DCA3E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CEAEB5B-AE9C-4944-8584-E4F422DCA3E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6163B3D-1B54-4707-BB52-6389E8690E24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6163B3D-1B54-4707-BB52-6389E8690E24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6163B3D-1B54-4707-BB52-6389E8690E24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6163B3D-1B54-4707-BB52-6389E8690E24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{162B9698-C6E8-436D-BE43-A061DA29EDBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{162B9698-C6E8-436D-BE43-A061DA29EDBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{162B9698-C6E8-436D-BE43-A061DA29EDBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{162B9698-C6E8-436D-BE43-A061DA29EDBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{309F41E8-E566-48E1-ACDF-5A9259E80F26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{309F41E8-E566-48E1-ACDF-5A9259E80F26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{309F41E8-E566-48E1-ACDF-5A9259E80F26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{309F41E8-E566-48E1-ACDF-5A9259E80F26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2E07A73-A99A-4F52-BA25-CD171232295E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2E07A73-A99A-4F52-BA25-CD171232295E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2E07A73-A99A-4F52-BA25-CD171232295E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2E07A73-A99A-4F52-BA25-CD171232295E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B900FFE-29F6-4DA6-BD77-FB3FF76EAE72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B900FFE-29F6-4DA6-BD77-FB3FF76EAE72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B900FFE-29F6-4DA6-BD77-FB3FF76EAE72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B900FFE-29F6-4DA6-BD77-FB3FF76EAE72}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

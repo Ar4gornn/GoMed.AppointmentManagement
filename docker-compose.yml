@@ -1,0 +1,22 @@
+﻿services:
+  seq:
+    image: datalust/seq
+    container_name: my-seqt
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "5341:5341"
+      - "8081:80"
+
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: some-rabbit
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
