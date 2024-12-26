@@ -20,7 +20,6 @@ namespace AppointmentManagement.Persistence
         {
             modelBuilder.Entity<Appointment>(entity =>
             {
-                entity.HasKey(a => a.Id);
                 entity.Property(a => a.PatientName).IsRequired().HasMaxLength(100);
                 entity.Property(a => a.ClinicId).IsRequired();
                 entity.HasOne(a => a.Clinic)

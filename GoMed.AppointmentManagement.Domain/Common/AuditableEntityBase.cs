@@ -1,9 +1,11 @@
-namespace AppointmentManagement.Domain.Common
+namespace GoMed.AppointmentManagement.Domain.Common
 {
-    public abstract class AuditableEntity
+    public abstract class AuditableEntityBase
     {
-        public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-        public byte[] RowVersion { get; set; }
+        public Guid Id { get; set; }
+        public DateTime Created { get; set; }
+        public string? CreatedBy { get; set; }
+        public DateTime? LastModified { get; set; }
+        public string? LastModifiedBy { get; set; }
     }
 }
