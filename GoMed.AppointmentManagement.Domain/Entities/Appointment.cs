@@ -4,7 +4,6 @@ namespace AppointmentManagement.Domain.Entities
 {
     public class Appointment : AuditableEntity
     {
-        public Guid Id { get; set; }
         public Guid ProfessionalId { get; set; }
         public Guid ClinicId { get; set; }
         public Guid PatientId { get; set; }
