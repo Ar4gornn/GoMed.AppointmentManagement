@@ -6,4 +6,4 @@ namespace GoMed.AppointmentManagement.Domain.Events.External;
 /// External Events are events that are sent from other microservices
 /// </summary>
 /// <param name="ExternalWeatherAnnouncementData"></param>
-public record WeatherAnnouncementCreatedEvent(ExternalWeatherAnnouncement? ExternalWeatherAnnouncementData);
+public record WeatherAnnouncementCreatedEvent(ExternalWeatherAnnouncementData);

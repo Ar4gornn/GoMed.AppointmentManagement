@@ -17,4 +17,8 @@
         <ProjectReference Include="..\GoMed.AppointmentManagement.Domain\GoMed.AppointmentManagement.Domain.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Seed\" />
+    </ItemGroup>
+
 </Project>
