@@ -1,8 +1,9 @@
 using AppointmentManagement.Domain.Common;
+using GoMed.AppointmentManagement.Domain.Enums;
 
 namespace AppointmentManagement.Domain.Entities
 {
-    public class Appointment : AuditableEntity
+    public class Appointment : AuditableEntityBase
     {
         public Guid ProfessionalId { get; set; }
         public Guid ClinicId { get; set; }
@@ -19,7 +20,6 @@ namespace AppointmentManagement.Domain.Entities
 
         public Clinic Clinic { get; set; }
         public Patient Patient { get; set; }
-        public AppointmentStatus Status { get; set; }
-
+        public AppointmentStatus AppointmentStatus { get; set; }
     }
 }

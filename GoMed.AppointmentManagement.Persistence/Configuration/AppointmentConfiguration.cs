@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using GoMed.AppointmentManagement.Domain.Entities;
+using AppointmentManagement.Domain.Entities;
+using GoMed.AppointmentManagement.Domain.Enums;
 
 namespace GoMed.AppointmentManagement.Persistence.Configuration
 {
@@ -21,11 +22,23 @@ namespace GoMed.AppointmentManagement.Persistence.Configuration
             builder.Property(a => a.ClinicId)
                 .IsRequired();
 
-            builder.Property(a => a.Date)
+            builder.Property(a => a.StartAt)
+                .IsRequired();
+
+            builder.Property(a => a.EndAt)
+                .IsRequired();
+
+            builder.Property(a => a.Type)
+                .HasMaxLength(100)
                 .IsRequired();
 
             builder.Property(a => a.Status)
-                .HasMaxLength(50)
+                .IsRequired();
+
+            builder.Property(a => a.AppointmentStatus)
+                .HasConversion(
+                    v => v.ToString(),
+                    v => (AppointmentStatus)Enum.Parse(typeof(AppointmentStatus), v))
                 .IsRequired();
 
             builder.Property(a => a.CreatedBy)

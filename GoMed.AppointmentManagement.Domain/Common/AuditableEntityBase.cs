@@ -1,4 +1,4 @@
-namespace GoMed.AppointmentManagement.Domain.Common
+namespace AppointmentManagement.Domain.Common
 {
     public abstract class AuditableEntityBase
     {
