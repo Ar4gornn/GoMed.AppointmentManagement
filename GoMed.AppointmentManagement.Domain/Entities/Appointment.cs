@@ -19,7 +19,6 @@ namespace AppointmentManagement.Domain.Entities
         public string BookingChannel { get; set; }
 
         public Clinic Clinic { get; set; }
-        public Patient Patient { get; set; }
         public AppointmentStatus AppointmentStatus { get; set; }
     }
 }
