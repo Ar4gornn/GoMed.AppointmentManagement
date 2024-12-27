@@ -1,5 +1,5 @@
 using GoMed.AppointmentManagement.Contracts.Interfaces;
-using GoMed.AppointmentManagement.Domain.Common;
+using AppointmentManagement.Domain.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -13,6 +13,13 @@ namespace GoMed.AppointmentManagement.Persistence.Interceptors;
 /// <param name="user"></param>
 public class AuditableEntityInterceptor(IAuthUserService user) : SaveChangesInterceptor
 {
+    public abstract class AuditableEntityBase
+    {
+        public string CreatedBy { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
+        public string LastModifiedBy { get; set; }
+        public DateTimeOffset? LastModified { get; set; }
+    }
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
         UpdateEntities(eventData.Context);
