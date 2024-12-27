@@ -1,7 +1,7 @@
 using AppointmentManagement.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace AppointmentManagement.Persistence
+namespace GoMed.AppointmentManagement.Persistence
 {
     public class ApplicationDbContext : DbContext
     {

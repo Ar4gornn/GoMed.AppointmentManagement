@@ -1,15 +1,11 @@
 using AppointmentManagement.Domain.Entities;
 using MediatR;
 
-namespace GoMed.AppointmentManagement.Domain.Events
-{
-    public class AppointmentCreatedEvent : INotification
-    {
-        public Appointment Appointment { get; }
+namespace AppointmentManagement.Domain.Events;
 
-        public AppointmentCreatedEvent(Appointment appointment)
-        {
-            Appointment = appointment;
-        }
-    }
-}
+/// <summary>
+/// This event will be published internally when an appointment is created.
+/// It can trigger workflows or notifications inside the system.
+/// </summary>
+/// <param name="AppointmentData"></param>
+public record AppointmentCreatedEvent(Appointment AppointmentData) : INotification;
