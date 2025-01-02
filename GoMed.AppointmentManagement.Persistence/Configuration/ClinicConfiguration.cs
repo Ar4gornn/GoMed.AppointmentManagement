@@ -10,10 +10,10 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using AppointmentManagement.Domain.Entities;
+using GoMed.AppointmentManagement.Domain.Entities;
 using GoMed.AppointmentManagement.Domain.Enums;
 
-namespace GoMed.AppointmentManagement.Persistence.Configurations
+namespace GoMed.AppointmentManagement.Persistence.Configuration
 {
     public class ClinicConfiguration : IEntityTypeConfiguration<Clinic>
     {

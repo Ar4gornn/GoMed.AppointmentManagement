@@ -1,7 +1,7 @@
 using AppointmentManagement.Domain.Common;
 using GoMed.AppointmentManagement.Domain.Enums;
 
-namespace AppointmentManagement.Domain.Entities
+namespace GoMed.AppointmentManagement.Domain.Entities
 {
     public class Appointment : AuditableEntityBase
     {
