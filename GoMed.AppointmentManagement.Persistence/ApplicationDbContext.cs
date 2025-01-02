@@ -1,5 +1,7 @@
-using AppointmentManagement.Domain.Entities;
+using GoMed.AppointmentManagement.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+//using GoMed.AppointmentManagement.Domain.Entities;
+
 
 namespace GoMed.AppointmentManagement.Persistence
 {
@@ -12,7 +14,7 @@ namespace GoMed.AppointmentManagement.Persistence
 
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Clinic> Clinics { get; set; }
-        public DbSet<Patient> Patients { get; set; }
+        public DbSet<AppointmentType> AppointmentTypes { get; set; }
         public DbSet<Availability> Availabilities { get; set; }
         public DbSet<Unavailability> Unavailabilities { get; set; }
 
@@ -34,11 +36,13 @@ namespace GoMed.AppointmentManagement.Persistence
                 entity.Property(c => c.Address).HasMaxLength(300);
             });
 
-            modelBuilder.Entity<Patient>(entity =>
+            modelBuilder.Entity<AppointmentType>(entity =>
             {
-                entity.HasKey(p => p.Id);
-                entity.Property(p => p.FirstName).IsRequired().HasMaxLength(100);
-                entity.Property(p => p.LastName).IsRequired().HasMaxLength(100);
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100);
+                // Additional configurations
             });
 
             modelBuilder.Entity<Availability>(entity =>

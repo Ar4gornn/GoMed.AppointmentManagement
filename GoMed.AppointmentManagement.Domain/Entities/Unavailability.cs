@@ -1,4 +1,4 @@
-namespace AppointmentManagement.Domain.Entities
+namespace GoMed.AppointmentManagement.Domain.Entities
 {
     public class Unavailability
     {

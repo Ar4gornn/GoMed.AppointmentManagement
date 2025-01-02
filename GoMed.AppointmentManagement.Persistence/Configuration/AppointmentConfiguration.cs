@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using AppointmentManagement.Domain.Entities;
+using GoMed.AppointmentManagement.Domain.Entities;
 
-namespace GoMed.Persistence.Configurations
+namespace GoMed.AppointmentManagement.Persistence.Configuration
 {
     public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
     {

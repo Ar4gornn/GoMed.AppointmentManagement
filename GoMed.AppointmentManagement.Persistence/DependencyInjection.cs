@@ -1,4 +1,4 @@
-using AppointmentManagement.Persistence;
+using GoMed.AppointmentManagement.Persistence;
 using GoMed.AppointmentManagement.Contracts.Interfaces;
 using GoMed.AppointmentManagement.Persistence.Interceptors;
 using Microsoft.EntityFrameworkCore;

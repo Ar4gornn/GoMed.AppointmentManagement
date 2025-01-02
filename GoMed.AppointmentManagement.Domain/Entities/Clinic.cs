@@ -1,6 +1,5 @@
-using System.Collections.Generic;
 
-namespace AppointmentManagement.Domain.Entities
+namespace GoMed.AppointmentManagement.Domain.Entities
 {
     public class Clinic
     {

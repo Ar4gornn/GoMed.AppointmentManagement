@@ -1,4 +1,5 @@
 
+
 namespace GoMed.AppointmentManagement.Domain.Entities
 {
     public class AppointmentType
@@ -9,3 +10,4 @@ namespace GoMed.AppointmentManagement.Domain.Entities
         
     }
 }
+
