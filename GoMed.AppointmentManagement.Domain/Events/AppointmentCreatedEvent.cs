@@ -1,4 +1,4 @@
-using AppointmentManagement.Domain.Entities;
+using GoMed.AppointmentManagement.Domain.Entities;
 using MediatR;
 
 namespace AppointmentManagement.Domain.Events;
