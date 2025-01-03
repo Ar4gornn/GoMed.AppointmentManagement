@@ -1,11 +1,16 @@
-using GoMed.AppointmentManagement.Domain.Entities;
-using MediatR;
+using GoMed.AppointmentManagement.Domain.Enums;
 
-namespace AppointmentManagement.Domain.Events;
+namespace GoMed.AppointmentManagement.Domain.Events;
+
 
 /// <summary>
-/// This event is triggered internally when an appointment is cancelled.
-/// It can notify relevant services or update logs.
+/// Event triggered internally when an appointment is canceled.
+/// This event updates the status and ensures the slot is freed up for new bookings.
 /// </summary>
 /// <param name="AppointmentData"></param>
-public record AppointmentCancelledEvent(Appointment AppointmentData);
+public record AppointmentCancelledEvent(
+    Guid AppointmentId,
+    AppointmentStatus Status,
+    string CancelledBy,
+    DateTime CancelledAt
+);

@@ -1,5 +1,6 @@
 using MediatR;
 using GoMed.AppointmentManagement.Domain.Entities;
+using Clinic = GoMed.AppointmentManagement.Domain.Enums.Clinic;
 
 namespace GoMed.AppointmentManagement.Domain.Events
 {

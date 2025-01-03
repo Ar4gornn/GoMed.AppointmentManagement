@@ -1,7 +1,7 @@
-namespace GoMed.AppointmentManagement.Domain
+namespace GoMed.AppointmentManagement.Domain.Enums
 {
     public class Clinic
     {
-        public bool IsOpen { get; set; }
+        public bool IsActive { get; set; }
     }
 }

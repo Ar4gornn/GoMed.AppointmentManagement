@@ -1,11 +1,20 @@
-using GoMed.AppointmentManagement.Domain.Entities;
-using MediatR;
+using GoMed.AppointmentManagement.Domain.Enums;
 
-namespace AppointmentManagement.Domain.Events;
+namespace GoMed.AppointmentManagement.Domain.Events;
 
 /// <summary>
-/// This event will be published internally when an appointment is created.
-/// It can trigger workflows or notifications inside the system.
+/// Event triggered internally when a new appointment is successfully created.
+/// This event updates internal records, schedules, and initiates relevant notifications.
 /// </summary>
 /// <param name="AppointmentData"></param>
-public record AppointmentCreatedEvent(Appointment AppointmentData);
+public record AppointmentCreatedEvent(
+    Guid AppointmentId,
+    Guid ProfessionalId,
+    Guid ClinicId,
+    Guid PatientId,
+    string PatientName,
+    DateTime StartAt,
+    DateTime EndAt,
+    string Type,
+    BookingChannel BookingChannel
+);
