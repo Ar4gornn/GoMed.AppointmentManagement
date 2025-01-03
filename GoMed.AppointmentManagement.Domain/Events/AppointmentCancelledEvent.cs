@@ -8,4 +8,4 @@ namespace AppointmentManagement.Domain.Events;
 /// It can notify relevant services or update logs.
 /// </summary>
 /// <param name="AppointmentData"></param>
-public record AppointmentCancelledEvent(Appointment AppointmentData) : INotification;
+public record AppointmentCancelledEvent(Appointment AppointmentData);

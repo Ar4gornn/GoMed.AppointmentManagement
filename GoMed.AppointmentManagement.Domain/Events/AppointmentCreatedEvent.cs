@@ -8,4 +8,4 @@ namespace AppointmentManagement.Domain.Events;
 /// It can trigger workflows or notifications inside the system.
 /// </summary>
 /// <param name="AppointmentData"></param>
-public record AppointmentCreatedEvent(Appointment AppointmentData) : INotification;
+public record AppointmentCreatedEvent(Appointment AppointmentData);

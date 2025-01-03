@@ -1,16 +1,12 @@
-using System.ComponentModel;
+using System.Text.Json.Serialization;
 
 namespace GoMed.AppointmentManagement.Domain.Enums
 {
+    [JsonConverter(typeof(Converters.BookingChannelJsonConverter))]
     public enum BookingChannel
     {
-        [Description("Booked by Patient")]
-        PatientBooking,
-
-        [Description("Booked by Secretary")]
-        SecretaryBooking,
-
-        [Description("Booked by Professional")]
-        ProfessionalBooking
+        Online = 0,
+        Phone = 1,
+        InPerson = 2
     }
 }
