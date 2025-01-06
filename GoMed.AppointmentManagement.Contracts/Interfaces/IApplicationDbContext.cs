@@ -1,15 +1,11 @@
-using GoMed.AppointmentManagement.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using GoMed.AppointmentManagement.Domain.Entities;
 
-namespace GoMed.AppointmentManagement.Contracts.Interfaces;
-
-public interface IApplicationDbContext
+namespace GoMed.AppointmentManagement.Contracts.Interfaces
 {
-    /// <summary>
-    /// This abstracts the DBContext in order to write the queries in the application layer
-    /// it could be replaced by a repository pattern
-    /// </summary>
-    DbSet<WeatherForecast> WeatherForecasts { get; set; }
-
-    Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+    public interface IApplicationDbContext
+    {
+        DbSet<AppointmentType> AppointmentTypes { get; }
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+    }
 }

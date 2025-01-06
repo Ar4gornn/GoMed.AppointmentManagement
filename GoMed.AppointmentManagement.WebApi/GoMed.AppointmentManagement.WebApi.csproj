@@ -9,17 +9,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0"/>
+        <PackageReference Include="FluentValidation" Version="11.11.0" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.11">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Serilog.AspNetCore" Version="8.0.3"/>
-        <PackageReference Include="Serilog.Exceptions" Version="8.4.0"/>
-        <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="4.0.0"/>
-        <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0"/>
-        <PackageReference Include="Serilog.Sinks.Seq" Version="8.0.0"/>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+        <PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
+        <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
+        <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="4.0.0" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+        <PackageReference Include="Serilog.Sinks.Seq" Version="8.0.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -29,9 +30,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\GoMed.AppointmentManagement.Application\GoMed.AppointmentManagement.Application.csproj"/>
-        <ProjectReference Include="..\GoMed.AppointmentManagement.Persistence\GoMed.AppointmentManagement.Persistence.csproj"/>
-        <ProjectReference Include="..\GoMed.AppointmentManagement.Services\GoMed.AppointmentManagement.Services.csproj"/>
+        <ProjectReference Include="..\GoMed.AppointmentManagement.Application\GoMed.AppointmentManagement.Application.csproj" />
+        <ProjectReference Include="..\GoMed.AppointmentManagement.Persistence\GoMed.AppointmentManagement.Persistence.csproj" />
+        <ProjectReference Include="..\GoMed.AppointmentManagement.Services\GoMed.AppointmentManagement.Services.csproj" />
     </ItemGroup>
 
 </Project>

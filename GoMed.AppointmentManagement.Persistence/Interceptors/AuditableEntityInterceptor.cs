@@ -1,5 +1,4 @@
 using GoMed.AppointmentManagement.Contracts.Interfaces;
-using AppointmentManagement.Domain.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
