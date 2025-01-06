@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Folder Include="Features\AppointmentManagement\" />
         <Folder Include="Features\WeatherForecasts\Commands\Delete\"/>
         <Folder Include="Features\WeatherForecasts\Commands\Update\"/>
     </ItemGroup>

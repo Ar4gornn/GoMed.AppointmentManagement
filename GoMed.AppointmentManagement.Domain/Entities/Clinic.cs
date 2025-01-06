@@ -3,13 +3,15 @@ namespace GoMed.AppointmentManagement.Domain.Entities
     public class Clinic
     {
         public Guid Id { get; set; }  // Primary key
+
+        public Guid ProfessionalId { get; set; }  // Link to a professional (foreign key)
         
-        public int ProfessionalId { get; set; }  // Link to a professional (foreign key)
+        public string ProfessionalName { get; set; }  // Professional's name
 
         public string Name { get; set; }  // Clinic name
-        
+
         public string Title { get; set; }  // Title or designation
-        
+
         public string PictureUrl { get; set; }  // URL for clinic image/logo
 
         public string Speciality { get; set; }  // Clinic's specialization (e.g., Dentistry, Cardiology)
@@ -19,14 +21,16 @@ namespace GoMed.AppointmentManagement.Domain.Entities
         public string DetailedAddress { get; set; }  // Additional address details (floor, building)
 
         public string MapUrl { get; set; }  // URL to map location
-        
+
         public bool AllowNewPatientBooking { get; set; }  // Allow new patients to book
-        
+
         public bool AllowPatientBooking { get; set; }  // Allow existing patients to book
 
-        public DateTime CreatedAt { get; set; }  // Timestamp for creation
+        public DateTimeOffset CreatedAt { get; set; }  // Timestamp for creation
+
+        public DateTimeOffset UpdatedAt { get; set; }  // Timestamp for last update
         
-        public DateTime UpdatedAt { get; set; }  // Timestamp for last update
+        public bool IsActive { get; set; }   // IsActive field for logical deletion
 
         public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
         public ICollection<Availability> Availabilities { get; set; }

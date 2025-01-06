@@ -5,8 +5,8 @@ namespace GoMed.AppointmentManagement.Domain.Enums
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum BookingChannel
     {
-        Online = 0,
-        Phone = 1,
-        InPerson = 2
+        ProfessionalBooking = 0,
+        SecretaryBooking = 1,
+        PatientBooking = 2
     }
 }

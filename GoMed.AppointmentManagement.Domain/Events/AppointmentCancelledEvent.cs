@@ -1,16 +1,15 @@
-using GoMed.AppointmentManagement.Domain.Enums;
+using GoMed.AppointmentManagement.Domain.Entities;
 
-namespace GoMed.AppointmentManagement.Domain.Events;
-
-
-/// <summary>
-/// Event triggered internally when an appointment is canceled.
-/// This event updates the status and ensures the slot is freed up for new bookings.
-/// </summary>
-/// <param name="AppointmentData"></param>
-public record AppointmentCancelledEvent(
-    Guid AppointmentId,
-    AppointmentStatus Status,
-    string CancelledBy,
-    DateTime CancelledAt
-);
+namespace GoMed.AppointmentManagement.Domain.Events
+{
+    /// <summary>
+    /// Event triggered when an appointment is cancelled.
+    /// This event informs scheduling systems to free up the allocated time slot 
+    /// and sends notifications to relevant parties.
+    /// </summary>
+    public class AppointmentCancelledEvent
+    {
+        public Appointment AppointmentData { get; set; }
+        public DateTimeOffset CancelledAt { get; set; }
+    }
+}

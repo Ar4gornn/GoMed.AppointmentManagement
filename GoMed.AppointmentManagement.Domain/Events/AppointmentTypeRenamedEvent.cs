@@ -1,10 +1,14 @@
-namespace GoMed.AppointmentManagement.Domain.Events;
+using GoMed.AppointmentManagement.Domain.Entities;
 
-/// <summary>
-/// Event triggered internally when the name of an appointment type is changed.
-/// This ensures all relevant systems and records reflect the updated name.
-/// </summary>
-public record AppointmentTypeRenamedEvent(
-    Guid AppointmentTypeId,
-    string NewName
-);
+namespace GoMed.AppointmentManagement.Domain.Events
+{
+    /// <summary>
+    /// Event triggered internally when the name of an appointment type is changed.
+    /// This ensures all relevant systems and records reflect the updated name.
+    /// </summary>
+    public class AppointmentTypeRenamedEvent
+    {
+        public AppointmentType AppointmentTypeData { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
+    }
+}

@@ -1,12 +1,15 @@
-namespace GoMed.AppointmentManagement.Domain.Events;
+using GoMed.AppointmentManagement.Domain.Entities;
 
-/// <summary>
-/// Event triggered internally when a new availability slot is created for a specific appointment type.
-/// This reflects the addition of a new time slot based on the appointment type and clinic schedule.
-/// </summary>
-public record AppointmentTypeSlotCreatedEvent(
-    Guid ClinicId,
-    Guid AppointmentTypeId,
-    DateTime StartAt,
-    DateTime EndAt
-);
+namespace GoMed.AppointmentManagement.Domain.Events
+{
+    /// <summary>
+    /// Event fired internally when an existing availability slot linked to an appointment type is updated.
+    /// This reflects changes in the availability for the specified clinic and appointment type.
+    /// </summary>
+    public class AppointmentTypeSlotUpdatedEvent
+    {
+        public AppointmentType AppointmentTypeData { get; set; }
+
+        public DateTimeOffset CreatedAt { get; set; }
+    }
+}

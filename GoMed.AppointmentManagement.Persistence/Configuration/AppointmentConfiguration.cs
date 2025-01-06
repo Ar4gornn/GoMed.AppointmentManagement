@@ -46,7 +46,7 @@ namespace GoMed.AppointmentManagement.Persistence.Configuration
                 .HasForeignKey(a => a.ClinicId);
 
             // Index ClinicId and PatientId
-            builder.HasIndex(a => a.ClinicId);
+            /*builder.HasIndex(a => a.ClinicId);
             builder.HasIndex(a => a.PatientId);
             builder.HasIndex(a => new { a.ClinicId, a.PatientId });
 
@@ -55,7 +55,7 @@ namespace GoMed.AppointmentManagement.Persistence.Configuration
 
             // Add a check constraint to ensure StartAt is before EndAt
             builder.ToTable("Appointments", t => 
-                t.HasCheckConstraint("CK_Appointment_StartBeforeEnd", "[StartAt] < [EndAt]"));
+                t.HasCheckConstraint("CK_Appointment_StartBeforeEnd", "[StartAt] < [EndAt]"));*/
         }
     }
 }

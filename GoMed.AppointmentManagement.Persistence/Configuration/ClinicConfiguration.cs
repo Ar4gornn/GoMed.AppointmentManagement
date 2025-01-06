@@ -41,6 +41,7 @@ namespace GoMed.AppointmentManagement.Persistence.Configuration
 
             // DetailedAddress: Optional, with a maximum length of 500 characters.
             builder.Property(c => c.DetailedAddress)
+                .IsRequired()
                 .HasMaxLength(500);
 
             // MapUrl: Optional, with a maximum length of 300 characters.
@@ -62,6 +63,15 @@ namespace GoMed.AppointmentManagement.Persistence.Configuration
             // UpdatedAt: Required, defaults to current timestamp.
             builder.Property(c => c.UpdatedAt)
                 .IsRequired();
+
+            // ProfessionalId: Required
+            builder.Property(c => c.ProfessionalId)
+                .IsRequired();
+
+            // ProfessionalName: Required, with a maximum length of 200 characters.
+            builder.Property(c => c.ProfessionalName)
+                .IsRequired()
+                .HasMaxLength(200);
 
             // Indexes
             // Add index for ProfessionalId to optimize queries

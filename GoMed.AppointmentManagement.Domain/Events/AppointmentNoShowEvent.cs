@@ -1,12 +1,15 @@
-namespace GoMed.AppointmentManagement.Domain.Events;
+using GoMed.AppointmentManagement.Domain.Entities;
 
-/// <summary>
-/// Event fired internally when a patient fails to attend their appointment without canceling.
-/// This updates the appointment status and logs the no-show.
-/// </summary>
-public record AppointmentNoShowEvent(
-    Guid AppointmentId,
-    Guid PatientId,
-    DateTime ScheduledTime,
-    bool ShowedUp
-);
+namespace GoMed.AppointmentManagement.Domain.Events
+{
+    /// <summary>
+    /// Event triggered when a patient does not show up for their appointment.
+    /// This event can be used to notify staff, update records, and potentially 
+    /// impose cancellation or no-show policies.
+    /// </summary>
+    public class AppointmentNoShowEvent
+    {
+        public Appointment AppointmentData { get; set; }
+        public DateTimeOffset NoShowAt { get; set; }
+    }
+}
