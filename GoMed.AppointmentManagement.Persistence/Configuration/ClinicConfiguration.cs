@@ -56,14 +56,6 @@ namespace GoMed.AppointmentManagement.Persistence.Configuration
             builder.Property(c => c.AllowPatientBooking)
                 .IsRequired();
 
-            // CreatedAt: Required, defaults to current timestamp.
-            builder.Property(c => c.CreatedAt)
-                .IsRequired();
-
-            // UpdatedAt: Required, defaults to current timestamp.
-            builder.Property(c => c.UpdatedAt)
-                .IsRequired();
-
             // ProfessionalId: Required
             builder.Property(c => c.ProfessionalId)
                 .IsRequired();
