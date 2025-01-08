@@ -6,5 +6,6 @@ namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Comm
 public class DeleteAppointmentType : IRequest<Result<int>>
 {
     public int Id { get; init; }
+    public Guid ClinicId { get; init; } 
 }
 

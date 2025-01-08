@@ -1,11 +1,10 @@
 using FluentValidation;
-using GoMed.AppointmentManagement.Contracts.Interfaces;
 
 namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Commands.Update.UpdateAppointmentType;
 
 public class UpdateAppointmentTypeValidator : AbstractValidator<UpdateAppointmentType>
 {
-    public UpdateAppointmentTypeValidator(IApplicationDbContext dbContext)
+    public UpdateAppointmentTypeValidator()
     {
         RuleFor(x => x.Id)
             .GreaterThan(0).WithMessage("Valid appointment type Id is required.");

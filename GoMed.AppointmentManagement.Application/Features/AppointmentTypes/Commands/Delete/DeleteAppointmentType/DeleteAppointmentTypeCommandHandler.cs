@@ -11,13 +11,13 @@ namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Comm
 public class DeleteAppointmentTypeCommandHandler(
     IApplicationDbContext dbContext,
     IPublishEndpoint publishEndpoint,
-    IMediator mediator) 
+    IMediator mediator)
     : IRequestHandler<DeleteAppointmentType, Result<int>>
 {
     public async Task<Result<int>> Handle(Delete.DeleteAppointmentType.DeleteAppointmentType request, CancellationToken cancellationToken)
     {
         var appointmentType = await dbContext.AppointmentTypes
-            .FirstOrDefaultAsync(a => a.Id == request.Id, cancellationToken);
+            .FirstOrDefaultAsync(a => a.Id == request.Id && a.ClinicId == request.ClinicId, cancellationToken);
 
         if (appointmentType == null)
         {

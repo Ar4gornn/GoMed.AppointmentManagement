@@ -1,7 +1,5 @@
 using GoMed.AppointmentManagement.Application.Common.Models;
 using GoMed.AppointmentManagement.Contracts.Interfaces;
-using GoMed.AppointmentManagement.Domain.Events;
-using GoMed.AppointmentManagement.Domain.Events.AppointmentType;
 using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +9,7 @@ namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Comm
 public class CreateAppointmentTypeCommandHandler(
     IApplicationDbContext dbContext,
     IPublishEndpoint publishEndpoint,
-    IMediator mediator) 
+    IMediator mediator)
     : IRequestHandler<CreateAppointmentType, Result<int>>
 {
     public async Task<Result<int>> Handle(Create.CreateAppointmentType.CreateAppointmentType request, CancellationToken cancellationToken)
@@ -38,13 +36,6 @@ public class CreateAppointmentTypeCommandHandler(
         var addedEntity = await dbContext.AppointmentTypes.AddAsync(appointmentType, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        // Publish domain event
-        var newEvent = new AppointmentTypeCreatedEvent(addedEntity.Entity);
-        await publishEndpoint.Publish(newEvent, cancellationToken);
-        await mediator.Publish(newEvent, cancellationToken);
-
         return Result<int>.Success(addedEntity.Entity.Id);
     }
 }
-
-

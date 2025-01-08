@@ -1,11 +1,10 @@
 using GoMed.AppointmentManagement.Application.Common.Models;
-using GoMed.AppointmentManagement.Application.Features.AppointmentManagements.Dtos;
+using GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Dtos;
 using MediatR;
 
 namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Queries.GetAll.GetAllAppointmentTypesQueries;
 
-public class GetAllAppointmentTypes : IRequest<Result<List<AppointmentTypeDto>>>
+public class GetAllAppointmentTypes : IRequest<Result<List<ReadAppointmentTypeDto>>>
 {
-    public Guid? ClinicId { get; init; } // optional filter by Clinic
+    public Guid ClinicId { get; init; }
 }
-

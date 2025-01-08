@@ -1,31 +1,28 @@
 using GoMed.AppointmentManagement.Application.Common.Models;
-using GoMed.AppointmentManagement.Application.Features.AppointmentManagements.Dtos;
+using GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Dtos;
 using GoMed.AppointmentManagement.Contracts.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Queries.Get.GetAppointmetnTypeById;
-public class GetAppointmentTypeById : IRequest<Result<AppointmentTypeDto>>
-{
-    public int Id { get; init; }
-}
+namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Queries.Get.GetAppointmentTypeById;
 
 public class GetAppointmentTypeByIdQueryHandler(
     IApplicationDbContext dbContext) 
-    : IRequestHandler<GetAppointmentTypeById, Result<AppointmentTypeDto>>
+    : IRequestHandler<GetAppointmentTypeById, Result<ReadAppointmentTypeDto>>
 {
-    public async Task<Result<AppointmentTypeDto>> Handle(GetAppointmentTypeById request, CancellationToken cancellationToken)
+    public async Task<Result<ReadAppointmentTypeDto>> Handle(GetAppointmentTypeById request, CancellationToken cancellationToken)
     {
         var appointmentType = await dbContext.AppointmentTypes
+            .AsNoTracking()
             .FirstOrDefaultAsync(a => a.Id == request.Id, cancellationToken);
 
         if (appointmentType == null)
         {
-            return Result<AppointmentTypeDto>.NotFound("AppointmentType.NotFound", "Appointment type does not exist.");
+            return Result<ReadAppointmentTypeDto>.NotFound("AppointmentType.NotFound", "Appointment type does not exist.");
         }
 
         // Map entity to DTO
-        var dto = new AppointmentTypeDto
+        var dto = new ReadAppointmentTypeDto
         {
             Id = appointmentType.Id,
             ClinicId = appointmentType.ClinicId,
@@ -35,6 +32,6 @@ public class GetAppointmentTypeByIdQueryHandler(
             AllowForPatientBooking = appointmentType.AllowForPatientBooking
         };
 
-        return Result<AppointmentTypeDto>.Success(dto);
+        return Result<ReadAppointmentTypeDto>.Success(dto);
     }
 }

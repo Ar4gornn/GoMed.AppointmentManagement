@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Queries.Get.GetAppointmetnTypeById;
+namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Queries.Get.GetAppointmentTypeById;
 
 public class GetAppointmentTypeByIdValidator : AbstractValidator<GetAppointmentTypeById>
 {

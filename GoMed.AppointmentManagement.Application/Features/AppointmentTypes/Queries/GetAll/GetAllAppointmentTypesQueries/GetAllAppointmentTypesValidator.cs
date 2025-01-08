@@ -8,7 +8,6 @@ public class GetAllAppointmentTypesValidator : AbstractValidator<GetAllAppointme
     {
         // ClinicId must not be empty if provided
         RuleFor(x => x.ClinicId)
-            .NotEmpty().WithMessage("Clinic ID is required.")
-            .When(x => x.ClinicId.HasValue); // Only enforce if ClinicId is specified
+            .NotEmpty().WithMessage("Clinic ID is required.");
     }
 }

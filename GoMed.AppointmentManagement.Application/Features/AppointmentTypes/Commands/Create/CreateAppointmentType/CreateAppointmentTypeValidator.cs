@@ -12,7 +12,7 @@ public class CreateAppointmentTypeValidator : AbstractValidator<CreateAppointmen
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Name is required.")
             .MaximumLength(200).WithMessage("Name must not exceed 200 characters.")
-            .MustAsync(async (request, name, cancellation) => 
+            .MustAsync(async (request, name, cancellation) =>
             {
                 // Ensure appointment type name is unique within the same clinic
                 return !await dbContext.AppointmentTypes
@@ -26,10 +26,9 @@ public class CreateAppointmentTypeValidator : AbstractValidator<CreateAppointmen
 
         // Color validation (max length and hex format)
         RuleFor(x => x.Color)
-            .MaximumLength(50).WithMessage("Color must not exceed 50 characters.")
+            .MaximumLength(7).WithMessage("Color must not exceed 7 characters.")
             .Matches("^#(?:[0-9a-fA-F]{3}){1,2}$")
             .WithMessage("Color must be a valid hex code (e.g., #FFFFFF or #FFF).")
             .When(x => !string.IsNullOrEmpty(x.Color));
-
     }
 }
