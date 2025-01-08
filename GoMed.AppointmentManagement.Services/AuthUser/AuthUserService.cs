@@ -3,6 +3,16 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 
 namespace GoMed.AppointmentManagement.Services.AuthUser;
+//Pro
+//add a list of ids clinicIds. match the requested clinicID to the list of clinicIds to be sure it's the right professional
+//usertype == professional and clinicId of the list == clinicId of the request || admin => return true
+//add field named userRoles to the AuthUserService that distinguishes between the different roles like enterprise, professional, secretary 
+//add everything to interfaces 
+
+
+//Patient
+//add a list of ids patientIds. match the requested patientId to the list of patientIds to be sure it's the right patient
+//match the profileId to the patientId and the requested appointmentId
 
 public class AuthUserService : IAuthUserService
 {

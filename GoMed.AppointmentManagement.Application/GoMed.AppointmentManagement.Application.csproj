@@ -7,7 +7,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Features\AppointmentManagement\" />
+        <Folder Include="Features\AppointmentManagement\Commands\" />
+        <Folder Include="Features\AppointmentManagement\Queries\" />
+        <Folder Include="Features\Appointments\Command\Create\" />
+        <Folder Include="Features\Appointments\Command\Delete\" />
+        <Folder Include="Features\Appointments\Command\Update\" />
+        <Folder Include="Features\Appointments\Dtos\" />
+        <Folder Include="Features\Appointments\Queries\" />
+        <Folder Include="Features\Unavailabilities\Command\Create\" />
+        <Folder Include="Features\Unavailabilities\Command\Delete\" />
+        <Folder Include="Features\Unavailabilities\Command\Update\" />
+        <Folder Include="Features\Unavailabilities\Dtos\" />
+        <Folder Include="Features\Unavailabilities\Queries\" />
         <Folder Include="Features\WeatherForecasts\Commands\Delete\"/>
         <Folder Include="Features\WeatherForecasts\Commands\Update\"/>
     </ItemGroup>
