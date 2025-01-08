@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using GoMed.AppointmentManagement.Domain.Entities;
@@ -65,6 +66,12 @@ namespace GoMed.AppointmentManagement.Persistence.Configuration
                 .IsRequired()
                 .HasMaxLength(200);
 
+            builder.Property(c => c.Availabilities).HasColumnType("jsonb")
+                .HasConversion(
+                    v => JsonSerializer.Serialize(v,JsonSerializerOptions.Default),
+                    v => JsonSerializer.Deserialize<ICollection<Availability>>(v,JsonSerializerOptions.Default) ?? new List<Availability>()
+                );
+            
             // Indexes
             // Add index for ProfessionalId to optimize queries
             builder.HasIndex(c => c.ProfessionalId);
