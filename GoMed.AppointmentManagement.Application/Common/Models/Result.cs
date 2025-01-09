@@ -119,7 +119,7 @@ public class Result<T> : Result
         return IsSuccess ? onSuccess(Value!) : onFailure(Error!);
     }
 
-    public new IResult ToIResult()
+    public new IResult ToIResult(int status201Created)
     {
         return IsSuccess
             ? Results.Ok(Value)

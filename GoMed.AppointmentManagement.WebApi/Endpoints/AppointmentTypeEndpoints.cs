@@ -18,12 +18,12 @@ public static class AppointmentTypeEndpoints
             .WithTags("AppointmentTypes")
             .WithOpenApi();
 
-        // Get all appointment types by clinic
+        // GetUnavailabilityById all appointment types by clinic
         group.MapGet("/", GetAll)
             .Produces<List<ReadAppointmentTypeDto>>(StatusCodes.Status200OK)
             .WithName("GetAllAppointmentTypes");
 
-        // Get an appointment type by Id
+        // GetUnavailabilityById an appointment type by Id
         group.MapGet("/{id}", GetById)
             .Produces<ReadAppointmentTypeDto>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status404NotFound)

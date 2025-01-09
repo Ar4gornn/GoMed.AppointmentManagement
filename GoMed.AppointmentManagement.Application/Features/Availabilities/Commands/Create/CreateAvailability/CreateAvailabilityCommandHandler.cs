@@ -1,7 +1,6 @@
 using GoMed.AppointmentManagement.Application.Common.Models;
 using GoMed.AppointmentManagement.Contracts.Interfaces;
 using GoMed.AppointmentManagement.Domain.Entities;
-using GoMed.AppointmentManagement.Domain.Events;
 using GoMed.AppointmentManagement.Domain.Events.Availability;
 using MassTransit;
 using MediatR;
@@ -14,45 +13,49 @@ public class CreateAvailabilityCommandHandler(
     IPublishEndpoint publishEndpoint,
     IMediator mediator) : IRequestHandler<CreateAvailability, Result<int>>
 {
-    public async Task<Result<int>> Handle(Create.CreateAvailability.CreateAvailability request, CancellationToken cancellationToken)
+    public async Task<Result<int>> Handle(CreateAvailability request, CancellationToken cancellationToken)
     {
-        // Use DateTimeOffset for comparison
-        var requestStartTime = request.StartTime;
-        var requestEndTime = request.EndTime;
-
-        // Check for overlapping availability
-        var overlaps = await dbContext.Availabilities.AnyAsync(a =>
-                a.ClinicId == request.ClinicId &&
+        // Check if availability already exists for the clinic, day, and time
+        var exists = await dbContext.Availabilities
+            .AnyAsync(a =>
+                a.Clinic != null &&
+                a.Clinic.Id == request.ClinicId &&
                 a.DayOfWeek == request.DayOfWeek &&
-                !(DateTimeOffset.MinValue.Add(a.EndTime.TimeOfDay) <= requestStartTime || 
-                  DateTimeOffset.MinValue.Add(a.StartTime.TimeOfDay) >= requestEndTime),  // Adjusted comparison
-            cancellationToken);
+                a.StartTime == request.StartTime,
+                cancellationToken);
 
-        if (overlaps)
+        if (exists)
         {
-            return Result<int>.Conflict("Availability.OverlapExists",
-                "An overlapping availability already exists for this clinic and day.");
+            return Result<int>.Conflict("Availability.Conflict", "Availability already exists.");
         }
 
-        // Store availability using DateTimeOffset
+        // Find the related clinic or return an error if not found
+        var clinic = await dbContext.Clinics
+            .FirstOrDefaultAsync(c => c.Id == request.ClinicId, cancellationToken);
+
+        if (clinic == null)
+        {
+            return Result<int>.NotFound("Clinic.NotFound", "Clinic not found.");
+        }
+
+        // Create new availability
         var availability = new Availability
         {
-            ClinicId = request.ClinicId,
+            Clinic = clinic,
             DayOfWeek = request.DayOfWeek,
             StartTime = request.StartTime,
-            EndTime   = request.EndTime
+            EndTime = request.EndTime
         };
 
-        var entry = await dbContext.Availabilities.AddAsync(availability, cancellationToken);
+        dbContext.Availabilities.Add(availability);
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        var @event = new AvailabilityCreatedEvent(entry.Entity);
+        // If you need to publish an event:
+        var @event = new AvailabilityCreatedEvent(availability);
         await publishEndpoint.Publish(@event, cancellationToken);
         await mediator.Publish(@event, cancellationToken);
 
-        return Result<int>.Success(entry.Entity.Id);
+        // Since we do not have an ID, you could return a generic "1" or "0" or switch to Result.Success() if you prefer.
+        return Result<int>.Success(1);
     }
-
-
-
 }

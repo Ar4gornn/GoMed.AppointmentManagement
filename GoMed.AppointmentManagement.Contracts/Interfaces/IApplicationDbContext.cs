@@ -7,6 +7,10 @@ namespace GoMed.AppointmentManagement.Contracts.Interfaces
     {
         DbSet<AppointmentType> AppointmentTypes { get; }
         DbSet<Availability> Availabilities { get; }
+        DbSet<Clinic> Clinics { get; }
+        DbSet<Unavailability> Unavailabilities { get; }
+        DbSet<Appointment> Appointments { get; }
+
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

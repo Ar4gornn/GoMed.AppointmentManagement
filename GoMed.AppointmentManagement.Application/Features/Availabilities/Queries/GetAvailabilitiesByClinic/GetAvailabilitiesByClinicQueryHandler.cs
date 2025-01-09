@@ -1,5 +1,5 @@
 using GoMed.AppointmentManagement.Application.Common.Models;
-using GoMed.AppointmentManagement.Application.Features.AppointmentManagement.Dtos;
+using GoMed.AppointmentManagement.Application.Features.Availabilities.Dtos;
 using GoMed.AppointmentManagement.Contracts.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -7,23 +7,21 @@ using Microsoft.EntityFrameworkCore;
 namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Queries.GetAvailabilitiesByClinic;
 
 public class GetAvailabilitiesByClinicQueryHandler(
-    IApplicationDbContext dbContext) : IRequestHandler<GetAvailabilitiesByClinic, Result<List<AvailabilityDto>>>
+    IApplicationDbContext dbContext) : IRequestHandler<GetAvailabilitiesByClinic, Result<List<ReadAvailabilityDto>>>
 {
-    public async Task<Result<List<AvailabilityDto>>> Handle(Queries.GetAvailabilitiesByClinic.GetAvailabilitiesByClinic request, CancellationToken cancellationToken)
+    public async Task<Result<List<ReadAvailabilityDto>>> Handle(GetAvailabilitiesByClinic request, CancellationToken cancellationToken)
     {
         var results = await dbContext.Availabilities
-            .Where(a => a.ClinicId == request.ClinicId)
-            .Select(a => new AvailabilityDto
+            .Where(a => a.Clinic != null && a.Clinic.Id == request.ClinicId)  // Filter by ClinicId
+            .Select(a => new ReadAvailabilityDto
             {
-                Id = a.Id,
-                ClinicId = a.ClinicId ?? Guid.Empty,
+                ClinicId = a.Clinic!.Id,  // Map ClinicId from Clinic entity
                 DayOfWeek = a.DayOfWeek,
-                StartTime = a.StartTime,  // Directly assign DateTimeOffset
-                EndTime   = a.EndTime     // Directly assign DateTimeOffset
+                StartTime = a.StartTime,
+                EndTime = a.EndTime
             })
             .ToListAsync(cancellationToken);
 
-        return Result<List<AvailabilityDto>>.Success(results);
+        return Result<List<ReadAvailabilityDto>>.Success(results);
     }
-
 }

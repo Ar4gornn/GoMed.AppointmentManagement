@@ -6,8 +6,8 @@ public class UpdateAvailabilityValidator : AbstractValidator<UpdateAvailability>
 {
     public UpdateAvailabilityValidator()
     {
-        RuleFor(x => x.AvailabilityId)
-            .GreaterThan(0).WithMessage("Invalid AvailabilityId.");
+        RuleFor(x => x.ClinicId)
+            .NotEmpty().WithMessage("ClinicId is required.");
 
         RuleFor(x => x.DayOfWeek)
             .InclusiveBetween(0, 6).WithMessage("DayOfWeek must be between 0 and 6.");

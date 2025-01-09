@@ -57,6 +57,7 @@ app.UseHttpsRedirection();
 app.UseCors("AllowAll");
 
 // Endpoints
-app.AddWeatherForecastEndpoints();
+app.AddAvailabilityEndpoints();
+app.AddAppointmentTypeEndpoints();
 
 app.Run();

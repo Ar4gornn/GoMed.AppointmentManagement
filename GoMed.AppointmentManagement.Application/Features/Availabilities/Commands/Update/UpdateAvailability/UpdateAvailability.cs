@@ -5,8 +5,12 @@ namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Comman
 
 public class UpdateAvailability : IRequest<Result>
 {
-    public int AvailabilityId { get; init; }
+    public Guid ClinicId { get; init; }
     public int DayOfWeek { get; init; }
-    public TimeSpan StartTime { get; init; }
-    public TimeSpan EndTime { get; init; }
+
+    // For updating, we keep StartTime as part of the "composite key" to look up the record.
+    public DateTimeOffset StartTime { get; init; }
+
+    // The new EndTime to update to
+    public DateTimeOffset EndTime { get; init; }
 }

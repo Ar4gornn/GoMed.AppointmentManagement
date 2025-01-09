@@ -1,4 +1,4 @@
-namespace GoMed.AppointmentManagement.Application.Features.AppointmentManagement.Dtos;
+namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Dtos;
 
 public class CreateAvailabilityDto
 {
