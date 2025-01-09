@@ -1,6 +1,7 @@
 using GoMed.AppointmentManagement.Application.Features.Appointments.Dtos;
 using GoMed.AppointmentManagement.Domain.Entities;
 using GoMed.AppointmentManagement.Domain.Enums;
+using GoMed.AppointmentManagement.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,9 +9,9 @@ namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.
 {
     public class CreateAppointmentCommandHandler : IRequestHandler<CreateAppointmentCommand, ReadAppointmentDto>
     {
-        private readonly AppointmentDbContext _dbContext;
+        private readonly ApplicationDbContext _dbContext;
 
-        public CreateAppointmentCommandHandler(AppointmentDbContext dbContext)
+        public CreateAppointmentCommandHandler(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -54,7 +55,7 @@ namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.
         }
     }
 
-    public class AppointmentDbContext : DbContext
+    public class ApplicationDbContext : DbContext
     {
         public DbSet<Appointment> Appointments { get; set; }
     }

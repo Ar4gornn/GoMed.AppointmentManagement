@@ -1,14 +1,15 @@
 using GoMed.AppointmentManagement.Application.Features.Appointments.Command.Create.CreateAppointmentCommand;
 using GoMed.AppointmentManagement.Application.Features.Appointments.Dtos;
+using GoMed.AppointmentManagement.Persistence;
 using MediatR;
 
 namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.Update
 {
     public class UpdateAppointmentCommandHandler : IRequestHandler<UpdateAppointmentCommand, ReadAppointmentDto>
     {
-        private readonly AppointmentDbContext _dbContext;
+        private readonly ApplicationDbContext _dbContext;
 
-        public UpdateAppointmentCommandHandler(AppointmentDbContext dbContext)
+        public UpdateAppointmentCommandHandler(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }

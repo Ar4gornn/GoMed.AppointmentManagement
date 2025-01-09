@@ -1,14 +1,15 @@
 using GoMed.AppointmentManagement.Application.Features.Appointments.Command.Create.CreateAppointmentCommand;
 using GoMed.AppointmentManagement.Domain.Enums;
+using GoMed.AppointmentManagement.Persistence;
 using MediatR;
 
 namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.Approve
 {
     public class ApproveAppointmentCommandHandler : IRequestHandler<ApproveAppointmentCommand>
     {
-        private readonly AppointmentDbContext _dbContext;
+        private readonly ApplicationDbContext _dbContext;
 
-        public ApproveAppointmentCommandHandler(AppointmentDbContext dbContext)
+        public ApproveAppointmentCommandHandler(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }

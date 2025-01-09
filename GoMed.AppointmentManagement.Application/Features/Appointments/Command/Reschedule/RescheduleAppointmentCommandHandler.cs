@@ -1,15 +1,16 @@
 using GoMed.AppointmentManagement.Application.Features.Appointments.Command.Create.CreateAppointmentCommand;
 using GoMed.AppointmentManagement.Domain.Events;
+using GoMed.AppointmentManagement.Persistence;
 using MediatR;
 
 namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.Reschedule
 {
     public class RescheduleAppointmentCommandHandler : IRequestHandler<RescheduleAppointmentCommand>
     {
-        private readonly AppointmentDbContext _dbContext;
+        private readonly ApplicationDbContext _dbContext;
         private readonly IMediator _mediator;
 
-        public RescheduleAppointmentCommandHandler(AppointmentDbContext dbContext, IMediator mediator)
+        public RescheduleAppointmentCommandHandler(ApplicationDbContext dbContext, IMediator mediator)
         {
             _dbContext = dbContext;
             _mediator = mediator;

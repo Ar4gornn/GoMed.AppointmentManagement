@@ -11,17 +11,18 @@ namespace GoMed.AppointmentManagement.Persistence;
 
 public static class DependencyInjection
 {
-    public static void AddPersistence(this IHostApplicationBuilder builder)
+    public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = builder.Configuration.GetConnectionString("MainDbConnection") ??
-                               throw new ArgumentNullException(nameof(builder.Configuration),
-                                   "MainDbConnection not found");
-        builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
+        var connectionString = configuration.GetConnectionString("MainDbConnection");
+
+        if (string.IsNullOrEmpty(connectionString))
         {
-            options.AddInterceptors(sp.GetRequiredService<ISaveChangesInterceptor>());
-            options.UseNpgsql(connectionString);
-        });
-        builder.Services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
-        builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+            throw new ArgumentNullException(nameof(connectionString), "MainDbConnection not found");
+        }
+
+        services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseNpgsql(connectionString));
+
+        return services;
     }
 }

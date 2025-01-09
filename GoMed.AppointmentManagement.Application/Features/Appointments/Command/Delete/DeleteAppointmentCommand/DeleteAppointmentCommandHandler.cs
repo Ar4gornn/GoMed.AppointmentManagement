@@ -1,13 +1,14 @@
 using GoMed.AppointmentManagement.Application.Features.Appointments.Command.Create.CreateAppointmentCommand;
+using GoMed.AppointmentManagement.Persistence;
 using MediatR;
 
 namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.Delete.DeleteAppointmentCommand
 {
     public class DeleteAppointmentCommandHandler : IRequestHandler<DeleteAppointmentCommand>
     {
-        private readonly AppointmentDbContext _dbContext;
+        private readonly ApplicationDbContext _dbContext;
 
-        public DeleteAppointmentCommandHandler(AppointmentDbContext dbContext)
+        public DeleteAppointmentCommandHandler(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }

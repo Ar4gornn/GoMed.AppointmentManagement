@@ -1,15 +1,16 @@
 using GoMed.AppointmentManagement.Application.Features.Appointments.Command.Create.CreateAppointmentCommand;
 using GoMed.AppointmentManagement.Domain.Events;
+using GoMed.AppointmentManagement.Persistence;
 using MediatR;
 
 namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.Set.SetAppointmentShowedUpCommand
 {
     public class SetAppointmentShowedUpCommandHandler : IRequestHandler<Command.Set.SetAppointmentShowedUpCommand.SetAppointmentShowedUpCommand>
     {
-        private readonly AppointmentDbContext _dbContext;
+        private readonly ApplicationDbContext _dbContext;
         private readonly IMediator _mediator;
 
-        public SetAppointmentShowedUpCommandHandler(AppointmentDbContext dbContext, IMediator mediator)
+        public SetAppointmentShowedUpCommandHandler(ApplicationDbContext dbContext, IMediator mediator)
         {
             _dbContext = dbContext;
             _mediator = mediator;
