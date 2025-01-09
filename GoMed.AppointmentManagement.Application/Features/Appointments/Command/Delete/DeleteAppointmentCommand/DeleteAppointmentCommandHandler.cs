@@ -1,6 +1,7 @@
-using GoMed.AppointmentManagement.Application.Features.Appointments.Command.Create.CreateAppointmentCommand;
+using GoMed.AppointmentManagement.Domain.Entities;
 using GoMed.AppointmentManagement.Persistence;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.Delete.DeleteAppointmentCommand
 {

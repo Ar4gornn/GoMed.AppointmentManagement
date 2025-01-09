@@ -12,7 +12,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Logging.ClearProviders();
-builder.Host.UseSerilog((context, configuration) =>
+builder.Host.UseSerilog((context, configuration) => 
     configuration.ReadFrom.Configuration(context.Configuration));
 
 // Add services to the container
@@ -44,7 +44,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    // app.SeedDatabase();
+    //app.SeedDatabase();
 }
 
 // Exception handling
@@ -57,7 +57,9 @@ app.UseHttpsRedirection();
 app.UseCors("AllowAll");
 
 // Endpoints
+app.AddAppointmentEndpoints();
 app.AddAvailabilityEndpoints();
+app.AddUnavailabilityEndpoints();
 app.AddAppointmentTypeEndpoints();
 
 app.Run();

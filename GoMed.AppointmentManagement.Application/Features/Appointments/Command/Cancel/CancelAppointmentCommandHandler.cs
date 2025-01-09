@@ -1,15 +1,16 @@
-using GoMed.AppointmentManagement.Application.Features.Appointments.Command.Create.CreateAppointmentCommand;
+using GoMed.AppointmentManagement.Domain.Entities;
 using GoMed.AppointmentManagement.Domain.Enums;
 using GoMed.AppointmentManagement.Domain.Events;
 using GoMed.AppointmentManagement.Persistence;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.Cancel
 {
     public class CancelAppointmentCommandHandler : IRequestHandler<CancelAppointmentCommand>
     {
         private readonly ApplicationDbContext _dbContext;
-        private readonly IMediator _mediator; // If you want to publish domain events
+        private readonly IMediator _mediator;
 
         public CancelAppointmentCommandHandler(ApplicationDbContext dbContext, IMediator mediator)
         {
@@ -20,7 +21,8 @@ namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.
         public async Task Handle(CancelAppointmentCommand request, CancellationToken cancellationToken)
         {
             var dto = request.Dto;
-            var appointment = await _dbContext.Appointments.FindAsync(new object?[] { dto.AppointmentId }, cancellationToken);
+            var appointment =
+                await _dbContext.Appointments.FindAsync(new object?[] { dto.AppointmentId }, cancellationToken);
 
             if (appointment == null)
             {

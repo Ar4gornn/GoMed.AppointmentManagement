@@ -1,7 +1,8 @@
-using GoMed.AppointmentManagement.Application.Features.Appointments.Command.Create.CreateAppointmentCommand;
 using GoMed.AppointmentManagement.Application.Features.Appointments.Dtos;
+using GoMed.AppointmentManagement.Domain.Entities;
 using GoMed.AppointmentManagement.Persistence;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.Update
 {
@@ -21,7 +22,6 @@ namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.
 
             if (appointment == null)
             {
-                // Handle not found, throw exception or return null
                 throw new KeyNotFoundException($"Appointment with Id {dto.Id} not found.");
             }
 
@@ -31,10 +31,8 @@ namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.
             appointment.Type = dto.Type;
             appointment.Notes = dto.Notes;
             appointment.StartAt = dto.NewStartTime;
-            appointment.EndAt = dto.NewEndTime ?? dto.NewStartTime.AddMinutes(30); 
-            // Some fallback logic, e.g., default duration if EndTime is null
+            appointment.EndAt = dto.NewEndTime ?? dto.NewStartTime.AddMinutes(30);
 
-            // Mark as modified explicitly or let EF detect changes
             _dbContext.Appointments.Update(appointment);
             await _dbContext.SaveChangesAsync(cancellationToken);
 

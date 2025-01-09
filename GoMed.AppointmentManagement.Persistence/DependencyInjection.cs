@@ -1,4 +1,3 @@
-using GoMed.AppointmentManagement.Persistence;
 using GoMed.AppointmentManagement.Contracts.Interfaces;
 using GoMed.AppointmentManagement.Persistence.Interceptors;
 using Microsoft.EntityFrameworkCore;
@@ -11,18 +10,16 @@ namespace GoMed.AppointmentManagement.Persistence;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
+    public static void AddPersistence(this IHostApplicationBuilder builder)
     {
-        var connectionString = configuration.GetConnectionString("MainDbConnection");
-
-        if (string.IsNullOrEmpty(connectionString))
+        var connectionString = builder.Configuration.GetConnectionString("MainDbConnection") ?? throw new ArgumentNullException(nameof(builder.Configuration), "MainDbConnection not found");
+        builder.Services.AddDbContext<ApplicationDbContext>((sp,options) =>
         {
-            throw new ArgumentNullException(nameof(connectionString), "MainDbConnection not found");
-        }
-
-        services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseNpgsql(connectionString));
-
-        return services;
+            options.AddInterceptors(sp.GetRequiredService<ISaveChangesInterceptor>());
+            options.UseNpgsql(connectionString);
+        });
+        builder.Services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
+        builder.Services.AddScoped<IApplicationDbContext,ApplicationDbContext>();
+        
     }
 }

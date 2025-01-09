@@ -54,9 +54,4 @@ namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.
             };
         }
     }
-
-    public class ApplicationDbContext : DbContext
-    {
-        public DbSet<Appointment> Appointments { get; set; }
-    }
 }

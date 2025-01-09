@@ -1,11 +1,12 @@
-using GoMed.AppointmentManagement.Application.Features.Appointments.Command.Create.CreateAppointmentCommand;
+using GoMed.AppointmentManagement.Domain.Entities;
 using GoMed.AppointmentManagement.Domain.Events;
 using GoMed.AppointmentManagement.Persistence;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.Set.SetAppointmentShowedUpCommand
 {
-    public class SetAppointmentShowedUpCommandHandler : IRequestHandler<Command.Set.SetAppointmentShowedUpCommand.SetAppointmentShowedUpCommand>
+    public class SetAppointmentShowedUpCommandHandler : IRequestHandler<SetAppointmentShowedUpCommand>
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IMediator _mediator;
@@ -16,7 +17,7 @@ namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.
             _mediator = mediator;
         }
 
-        public async Task Handle(Command.Set.SetAppointmentShowedUpCommand.SetAppointmentShowedUpCommand request, CancellationToken cancellationToken)
+        public async Task Handle(SetAppointmentShowedUpCommand request, CancellationToken cancellationToken)
         {
             var appointment = await _dbContext.Appointments.FindAsync(new object?[] { request.AppointmentId }, cancellationToken);
 
@@ -27,7 +28,6 @@ namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.
 
             appointment.ShowedUp = request.ShowedUp;
 
-            // Optionally set status to Completed if they showed up?
             if (request.ShowedUp)
             {
                 appointment.Status = Domain.Enums.AppointmentStatus.Completed;

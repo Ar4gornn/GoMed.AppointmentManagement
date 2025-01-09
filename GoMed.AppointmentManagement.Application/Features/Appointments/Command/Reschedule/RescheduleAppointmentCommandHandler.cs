@@ -1,7 +1,8 @@
-using GoMed.AppointmentManagement.Application.Features.Appointments.Command.Create.CreateAppointmentCommand;
+using GoMed.AppointmentManagement.Domain.Entities;
 using GoMed.AppointmentManagement.Domain.Events;
 using GoMed.AppointmentManagement.Persistence;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.Reschedule
 {
@@ -31,7 +32,6 @@ namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.
             _dbContext.Appointments.Update(appointment);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            // Publish domain event
             await _mediator.Publish(new AppointmentRescheduledEvent(appointment), cancellationToken);
         }
     }

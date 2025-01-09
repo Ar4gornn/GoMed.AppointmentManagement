@@ -1,13 +1,12 @@
-using GoMed.AppointmentManagement.Application.Features.Appointments.Command.Create.CreateAppointmentCommand;
 using GoMed.AppointmentManagement.Application.Features.Appointments.Dtos;
+using GoMed.AppointmentManagement.Domain.Entities;
 using GoMed.AppointmentManagement.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace GoMed.AppointmentManagement.Application.Features.Appointments.Queries.Get.GetAppointmentByClinicIdQuery
 {
-    public class GetAppointmentByClinicIdQueryHandler 
-        : IRequestHandler<GetAppointmentByClinicIdQuery, List<ReadAppointmentDto>>
+    public class GetAppointmentByClinicIdQueryHandler : IRequestHandler<GetAppointmentByClinicIdQuery, List<ReadAppointmentDto>>
     {
         private readonly ApplicationDbContext _dbContext;
 
