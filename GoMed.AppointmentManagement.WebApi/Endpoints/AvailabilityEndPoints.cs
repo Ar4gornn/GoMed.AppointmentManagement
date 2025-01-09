@@ -11,32 +11,27 @@ public static class AvailabilityEndpoints
 {
     public static void AddAvailabilityEndpoints(this IEndpointRouteBuilder builder)
     {
-        var group = builder.MapGroup("api/v1/availabilities")
-            .WithTags("Availabilities")
+        // Clinic-related endpoints
+        var clinicGroup = builder.MapGroup("api/v1/availabilities/clinics")
+            .WithTags("Clinic Availabilities")
             .WithOpenApi();
 
-        // Existing endpoints ...
+        // 1) Get all availabilities by clinic
+        clinicGroup.MapGet("/{clinicId:guid}", GetByClinic)
+            .Produces<List<ReadAvailabilityDto>>(StatusCodes.Status200OK);
 
-        // 1) GetUnavailabilityById all availabilities by clinic
-        group.MapGet("/clinic/{clinicId:guid}", GetByClinic)
-            .Produces<List<ReadAvailabilityDto>>(StatusCodes.Status200OK)
-            .WithName("GetAvailabilitiesByClinic");
+        // 2) Set multiple availabilities at once
+        clinicGroup.MapPost("/set", Set)
+            .Produces(StatusCodes.Status200OK);
+        
 
-        // 2) Create an availability
-        group.MapPost("/", Create)
-            .Produces<int>(StatusCodes.Status201Created)
-            .WithName("CreateAvailability");
+        // 3) Create an availability
+        clinicGroup.MapPost("/", Create)
+            .Produces<int>(StatusCodes.Status201Created);
 
-        // 3) Update an existing availability
-        group.MapPut("/", Update)
-            .Produces(StatusCodes.Status200OK)
-            .WithName("UpdateAvailability");
-
-        // 4) Set multiple availabilities at once
-        group.MapPost("/set", Set)
-            .Produces(StatusCodes.Status200OK)
-            .ProducesProblem(StatusCodes.Status400BadRequest)
-            .WithName("SetAvailabilities");
+        // 4) Update an existing availability
+        clinicGroup.MapPut("/", Update)
+            .Produces(StatusCodes.Status200OK);
     }
 
     private static async Task<IResult> GetByClinic(
@@ -87,3 +82,4 @@ public static class AvailabilityEndpoints
         return response.ToIResult();
     }
 }
+

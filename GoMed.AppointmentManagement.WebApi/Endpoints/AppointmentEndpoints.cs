@@ -16,65 +16,57 @@ public static class AppointmentEndpoints
 {
     public static void AddAppointmentEndpoints(this IEndpointRouteBuilder builder)
     {
-        var group = builder.MapGroup("api/v1/appointments")
-            .WithTags("Appointments")
+        // Patient-related endpoints
+        var patientGroup = builder.MapGroup("api/v1/appointments/patients")
+            .WithTags("Patient Appointments")
+            .WithOpenApi();
+
+        // Get appointments by PatientId
+        patientGroup.MapGet("/{patientId}", GetByPatientId)
+            .Produces<List<ReadAppointmentDto>>(StatusCodes.Status200OK);
+
+        // Set Appointment Showed Up
+        patientGroup.MapPut("/{id}/showed-up", SetShowedUp)
+            .Produces(StatusCodes.Status200OK);
+
+        // Cancel an appointment
+        patientGroup.MapPost("/{id}/cancel", Cancel)
+            .Produces(StatusCodes.Status200OK);
+
+
+
+        // Professional-related endpoints
+        var professionalGroup = builder.MapGroup("api/v1/appointments/professionals")
+            .WithTags("Professional Appointments")
             .WithOpenApi();
 
         // Get appointments by ClinicId
-        group.MapGet("/clinic/{clinicId}", GetByClinicId)
-            .Produces<List<ReadAppointmentDto>>(StatusCodes.Status200OK)
-            .ProducesProblem(StatusCodes.Status400BadRequest)
-            .WithName("GetAppointmentsByClinicId");
+        professionalGroup.MapGet("/clinics/{clinicId}", GetByClinicId)
+            .Produces<List<ReadAppointmentDto>>(StatusCodes.Status200OK);
 
-        // Get appointments by PatientId
-        group.MapGet("/patient/{patientId}", GetByPatientId)
-            .Produces<List<ReadAppointmentDto>>(StatusCodes.Status200OK)
-            .ProducesProblem(StatusCodes.Status400BadRequest)
-            .WithName("GetAppointmentsByPatientId");
 
         // Create a new appointment
-        group.MapPost("/", Create)
-            .Produces<ReadAppointmentDto>(StatusCodes.Status201Created)
-            .ProducesProblem(StatusCodes.Status400BadRequest)
-            .WithName("CreateAppointment");
+        professionalGroup.MapPost("/", Create)
+            .Produces<ReadAppointmentDto>(StatusCodes.Status201Created);
+
 
         // Update an appointment
-        group.MapPut("/{id}", Update)
-            .Produces<ReadAppointmentDto>(StatusCodes.Status200OK)
-            .ProducesProblem(StatusCodes.Status400BadRequest)
-            .ProducesProblem(StatusCodes.Status404NotFound)
-            .WithName("UpdateAppointment");
+        professionalGroup.MapPut("/{id}", Update)
+            .Produces<ReadAppointmentDto>(StatusCodes.Status200OK);
 
         // Delete an appointment
-        group.MapDelete("/{id}", Delete)
-            .Produces(StatusCodes.Status200OK)
-            .ProducesProblem(StatusCodes.Status404NotFound)
-            .WithName("DeleteAppointment");
+        professionalGroup.MapDelete("/{id}", Delete)
+            .Produces(StatusCodes.Status200OK);
+
 
         // Reschedule an appointment
-        group.MapPut("/{id}/reschedule", Reschedule)
-            .Produces<ReadAppointmentDto>(StatusCodes.Status200OK)
-            .ProducesProblem(StatusCodes.Status400BadRequest)
-            .WithName("RescheduleAppointment");
+        professionalGroup.MapPut("/{id}/reschedule", Reschedule)
+            .Produces<ReadAppointmentDto>(StatusCodes.Status200OK);
+
 
         // Approve or Decline an appointment
-        group.MapPut("/{id}/approve", Approve)
-            .Produces(StatusCodes.Status200OK)
-            .ProducesProblem(StatusCodes.Status400BadRequest)
-            .WithName("ApproveAppointment");
-
-        // Set Appointment Showed Up
-        group.MapPut("/{id}/showed-up", SetShowedUp)
-            .Produces(StatusCodes.Status200OK)
-            .ProducesProblem(StatusCodes.Status400BadRequest)
-            .WithName("SetAppointmentShowedUp");
-
-        // Cancel an appointment
-        group.MapPost("/{id}/cancel", Cancel)
-            .Produces(StatusCodes.Status200OK)
-            .ProducesProblem(StatusCodes.Status404NotFound)
-            .ProducesProblem(StatusCodes.Status400BadRequest)
-            .WithName("CancelAppointment");
+        professionalGroup.MapPut("/{id}/approve", Approve)
+            .Produces(StatusCodes.Status200OK);
     }
 
     // Get Appointments by ClinicId
@@ -209,3 +201,4 @@ public static class AppointmentEndpoints
         return Results.Ok();
     }
 }
+

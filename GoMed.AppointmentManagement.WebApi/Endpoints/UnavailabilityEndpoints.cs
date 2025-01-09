@@ -12,42 +12,31 @@ public static class UnavailabilityEndpoints
 {
     public static void AddUnavailabilityEndpoints(this IEndpointRouteBuilder builder)
     {
-        // The group is set to "api/v1/unavailabilities"
-        var group = builder.MapGroup("api/v1/unavailabilities")
-            .WithTags("Unavailabilities")
+        // Clinic-specific unavailability endpoints
+        var clinicGroup = builder.MapGroup("api/v1/unavailabilities/clinics")
+            .WithTags("Clinic Unavailabilities")
             .WithOpenApi();
 
-        // GET by clinic
-        group.MapGet("/clinic/{clinicId:guid}", GetByClinic)
-            .Produces<List<ReadUnavailabilityDto>>(StatusCodes.Status200OK)
-            .ProducesProblem(StatusCodes.Status404NotFound)
-            .WithName("GetUnavailabilitiesByClinic");
+        // GET all unavailabilities by clinic
+        clinicGroup.MapGet("/{clinicId:guid}", GetByClinic)
+            .Produces<List<ReadUnavailabilityDto>>(StatusCodes.Status200OK);
 
-        // GET by Id
-        group.MapGet("/{id:int}/clinic/{clinicId:guid}", GetById)
-            .Produces<ReadUnavailabilityDto>(StatusCodes.Status200OK)
-            .ProducesProblem(StatusCodes.Status404NotFound)
-            .WithName("GetUnavailabilityById");
+        // GET unavailability by Id
+        clinicGroup.MapGet("/{id:int}/clinics/{clinicId:guid}", GetById)
+            .Produces<ReadUnavailabilityDto>(StatusCodes.Status200OK);
 
-        // CREATE
-        group.MapPost("/", Create)
-            .Produces<int>(StatusCodes.Status201Created)
-            .ProducesProblem(StatusCodes.Status409Conflict)
-            .ProducesProblem(StatusCodes.Status400BadRequest)
-            .WithName("CreateUnavailability");
 
-        // UPDATE
-        group.MapPut("/{id:int}", Update)
-            .Produces(StatusCodes.Status200OK)
-            .ProducesProblem(StatusCodes.Status404NotFound)
-            .ProducesProblem(StatusCodes.Status400BadRequest)
-            .WithName("UpdateUnavailability");
+        // CREATE unavailability
+        clinicGroup.MapPost("/", Create)
+            .Produces<int>(StatusCodes.Status201Created);
 
-        // DELETE
-        group.MapDelete("/{id:int}/clinic/{clinicId:guid}", Delete)
-            .Produces(StatusCodes.Status200OK)
-            .ProducesProblem(StatusCodes.Status404NotFound)
-            .WithName("DeleteUnavailability");
+        // UPDATE unavailability
+        clinicGroup.MapPut("/{id:int}", Update)
+            .Produces(StatusCodes.Status200OK);
+
+        // DELETE unavailability
+        clinicGroup.MapDelete("/{id:int}/clinics/{clinicId:guid}", Delete)
+            .Produces(StatusCodes.Status200OK);
     }
 
     private static async Task<IResult> GetByClinic(
@@ -60,9 +49,10 @@ public static class UnavailabilityEndpoints
         {
             ClinicId = clinicId
         };
-        
+
         var response = await mediator.Send(request);
-        return response.ToIResult();
+        if (!response.IsSuccess) return response.ToIResult();
+        return Results.Ok(response.Value);
     }
 
     private static async Task<IResult> GetById(
@@ -77,9 +67,10 @@ public static class UnavailabilityEndpoints
             Id = id,
             ClinicId = clinicId
         };
-        
+
         var response = await mediator.Send(request);
-        return response.ToIResult();
+        if (!response.IsSuccess) return response.ToIResult();
+        return Results.Ok(response.Value);
     }
 
     private static async Task<IResult> Create(
@@ -89,9 +80,8 @@ public static class UnavailabilityEndpoints
     )
     {
         var response = await mediator.Send(request);
-        // Optionally set a location header
-        // context.Response.Headers.Location = $"/api/v1/unavailabilities/{response.Value}";
-        return response.ToIResult(StatusCodes.Status201Created);
+        if (!response.IsSuccess) return response.ToIResult();
+        return Results.Created("/api/v1/unavailabilities", response.Value);
     }
 
     private static async Task<IResult> Update(
@@ -101,7 +91,6 @@ public static class UnavailabilityEndpoints
         UpdateUnavailability request
     )
     {
-        // Optional: ensure route 'id' matches body 'request.Id'
         if (request.Id != id)
         {
             return Results.Problem(
@@ -109,9 +98,10 @@ public static class UnavailabilityEndpoints
                 statusCode: StatusCodes.Status400BadRequest
             );
         }
-        
+
         var response = await mediator.Send(request);
-        return response.ToIResult();
+        if (!response.IsSuccess) return response.ToIResult();
+        return Results.Ok();
     }
 
     private static async Task<IResult> Delete(
@@ -128,6 +118,7 @@ public static class UnavailabilityEndpoints
         };
 
         var response = await mediator.Send(request);
-        return response.ToIResult();
+        if (!response.IsSuccess) return response.ToIResult();
+        return Results.Ok();
     }
 }

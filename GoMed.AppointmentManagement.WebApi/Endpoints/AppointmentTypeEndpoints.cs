@@ -12,43 +12,35 @@ public static class AppointmentTypeEndpoints
 {
     public static void AddAppointmentTypeEndpoints(this IEndpointRouteBuilder builder)
     {
-        // The group is set to "api/v1/appointment-types"
-        // Adjust as needed for your URL structure
-        var group = builder.MapGroup("api/v1/appointment-types")
-            .WithTags("AppointmentTypes")
+        // Patient-related endpoints
+        var patientGroup = builder.MapGroup("api/v1/appointment-types/patients")
+            .WithTags("Patient AppointmentTypes")
             .WithOpenApi();
 
-        // GetUnavailabilityById all appointment types by clinic
-        group.MapGet("/", GetAll)
-            .Produces<List<ReadAppointmentTypeDto>>(StatusCodes.Status200OK)
-            .WithName("GetAllAppointmentTypes");
+        // Get all appointment types (accessible to patients, optionally filtered by ClinicId)
+        patientGroup.MapGet("/", GetAll)
+            .Produces<List<ReadAppointmentTypeDto>>(StatusCodes.Status200OK);
 
-        // GetUnavailabilityById an appointment type by Id
-        group.MapGet("/{id}", GetById)
-            .Produces<ReadAppointmentTypeDto>(StatusCodes.Status200OK)
-            .ProducesProblem(StatusCodes.Status404NotFound)
-            .WithName("GetAppointmentTypeById");
+        // Professional-related endpoints
+        var professionalGroup = builder.MapGroup("api/v1/appointment-types/professionals")
+            .WithTags("Professional AppointmentTypes")
+            .WithOpenApi();
+
+        // Get an appointment type by Id
+        professionalGroup.MapGet("/{id}", GetById)
+            .Produces<ReadAppointmentTypeDto>(StatusCodes.Status200OK);
 
         // Create an appointment type
-        group.MapPost("/", Create)
-            .Produces<int>(StatusCodes.Status201Created)
-            .ProducesProblem(StatusCodes.Status409Conflict)
-            .ProducesProblem(StatusCodes.Status400BadRequest)
-            .WithName("CreateAppointmentType");
+        professionalGroup.MapPost("/", Create)
+            .Produces<int>(StatusCodes.Status201Created);
 
         // Update an appointment type
-        group.MapPut("/{id}", Update)
-            .Produces<int>(StatusCodes.Status200OK)
-            .ProducesProblem(StatusCodes.Status404NotFound)
-            .ProducesProblem(StatusCodes.Status409Conflict)
-            .ProducesProblem(StatusCodes.Status400BadRequest)
-            .WithName("UpdateAppointmentType");
+        professionalGroup.MapPut("/{id}", Update)
+            .Produces<int>(StatusCodes.Status200OK);
 
         // Delete an appointment type
-        group.MapDelete("/{id}", Delete)
-            .Produces<int>(StatusCodes.Status200OK)
-            .ProducesProblem(StatusCodes.Status404NotFound)
-            .WithName("DeleteAppointmentType");
+        professionalGroup.MapDelete("/{id}", Delete)
+            .Produces<int>(StatusCodes.Status200OK);
     }
 
     /// <summary>
@@ -65,7 +57,7 @@ public static class AppointmentTypeEndpoints
         {
             ClinicId = clinicId
         };
-        
+
         var response = await mediator.Send(request);
         return response.ToIResult();
     }
@@ -83,7 +75,7 @@ public static class AppointmentTypeEndpoints
         {
             Id = id
         };
-        
+
         var response = await mediator.Send(request);
         return response.ToIResult();
     }
@@ -147,3 +139,4 @@ public static class AppointmentTypeEndpoints
         return response.ToIResult();
     }
 }
+

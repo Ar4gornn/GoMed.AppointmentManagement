@@ -18,11 +18,11 @@ public static class DependencyInjection
             ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("RedisConnection") ??
                                           throw new ArgumentException("RedisConnection is not configured")));
         builder.Services.AddScoped<ICachingService, CachingService>();
-        builder.Services.AddAzureClients(b =>
-        {
-            b.AddBlobServiceClient(builder.Configuration.GetConnectionString("AzureBlobStorageConnection"));
-        });
+        //builder.Services.AddAzureClients(b =>
+        //{
+        //    b.AddBlobServiceClient(builder.Configuration.GetConnectionString("AzureBlobStorageConnection"));
+        //});
         builder.Services.AddScoped<IAuthUserService, AuthUserService>();
-        builder.Services.AddScoped<IImageService, AzureBlobService>();
+        //builder.Services.AddScoped<IImageService, AzureBlobService>();
     }
 }
