@@ -1,9 +1,14 @@
+// Program.cs
+
 using GoMed.AppointmentManagement.Application;
 using GoMed.AppointmentManagement.Persistence;
 using GoMed.AppointmentManagement.Services;
 using GoMed.AppointmentManagement.WebApi.Endpoints;
 using GoMed.AppointmentManagement.WebApi.Middlewares;
 using Serilog;
+using Microsoft.EntityFrameworkCore; // Ensure this using directive is present
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,7 +49,29 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    //app.SeedDatabase();
+}
+
+// Apply migrations and seed the database
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<ApplicationDbContext>();
+        // Apply any pending migrations
+        context.Database.Migrate();
+        
+        // If you have additional seeding logic beyond ModelBuilder.Seed(), execute it here
+        // For example:
+        // await SeedAdditionalDataAsync(context, services);
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while migrating or seeding the database.");
+        // Optionally, rethrow the exception if you want the application to stop
+        // throw;
+    }
 }
 
 // Exception handling

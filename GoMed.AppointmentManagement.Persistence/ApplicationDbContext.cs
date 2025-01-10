@@ -1,6 +1,7 @@
 using System.Reflection;
 using GoMed.AppointmentManagement.Contracts.Interfaces;
 using GoMed.AppointmentManagement.Domain.Entities;
+using GoMed.AppointmentManagement.Persistence.Seed;
 using Microsoft.EntityFrameworkCore;
 
 namespace GoMed.AppointmentManagement.Persistence;
@@ -17,6 +18,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         base.OnModelCreating(modelBuilder);
+        
+        modelBuilder.Seed();
     }
     
 }
