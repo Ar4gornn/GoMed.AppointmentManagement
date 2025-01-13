@@ -1,3 +1,4 @@
+using System.Linq;
 using FluentValidation;
 
 namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Set.SetAvailabilities
@@ -13,13 +14,16 @@ namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Set.Se
             RuleForEach(x => x.Availabilities).ChildRules(avail =>
             {
                 avail.RuleFor(a => a.DayOfWeek)
-                    .InclusiveBetween(0, 6).WithMessage("DayOfWeek must be between 0 (Sunday) and 6 (Saturday).");
+                    .InclusiveBetween(0, 6)
+                    .WithMessage("DayOfWeek must be between 0 (Sunday) and 6 (Saturday).");
 
                 avail.RuleFor(a => a.StartTime)
-                    .LessThan(a => a.EndTime).WithMessage("StartTime must be before EndTime.");
+                    .LessThan(a => a.EndTime)
+                    .WithMessage("StartTime must be before EndTime.");
 
                 avail.RuleFor(a => a.EndTime)
-                    .GreaterThan(a => a.StartTime).WithMessage("EndTime must be after StartTime.");
+                    .GreaterThan(a => a.StartTime)
+                    .WithMessage("EndTime must be after StartTime.");
             });
 
             // Validate no overlapping intervals within each DayOfWeek
@@ -39,7 +43,7 @@ namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Set.Se
                         var current = sorted[i];
                         var next = sorted[i + 1];
 
-                        // If current.EndTime > next.StartTime => overlap
+                        // If current.EndTime > next.StartTime, then there is an overlap.
                         if (current.EndTime > next.StartTime)
                         {
                             context.AddFailure(

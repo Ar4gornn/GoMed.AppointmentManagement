@@ -11,6 +11,7 @@
         <Folder Include="Consumers\Internal\" />
         <Folder Include="Features\Appointments\Command\Set\" />
         <Folder Include="Features\Availabilities\Commands\Delete\" />
+        <Folder Include="Features\Availabilities\Queries\Get\" />
     </ItemGroup>
 
     <ItemGroup>

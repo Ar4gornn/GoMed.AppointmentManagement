@@ -24,7 +24,6 @@ namespace GoMed.AppointmentManagement.Persistence.Seed
             
             // Seed Availabilities
             var availabilities = AvailabilitySeed.GetAvailabilities();
-            modelBuilder.Entity<Availability>().HasData(availabilities);
 
             // Seed Unavailabilities
             var unavailabilities = UnavailabilitySeed.GetUnavailabilities();

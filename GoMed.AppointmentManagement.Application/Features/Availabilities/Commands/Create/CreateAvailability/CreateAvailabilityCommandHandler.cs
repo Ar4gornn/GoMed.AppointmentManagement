@@ -38,24 +38,25 @@ public class CreateAvailabilityCommandHandler(
             return Result<int>.NotFound("Clinic.NotFound", "Clinic not found.");
         }
 
-        // Create new availability
+        // Create new availability (entity now includes an Id property)
         var availability = new Availability
         {
             Clinic = clinic,
             DayOfWeek = request.DayOfWeek,
             StartTime = request.StartTime,
             EndTime = request.EndTime
+            // The Id property will be set by the database (or initialized automatically) upon saving.
         };
 
         dbContext.Availabilities.Add(availability);
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        // If you need to publish an event:
+        // Publish an event after creating the availability
         var @event = new AvailabilityCreatedEvent(availability);
         await publishEndpoint.Publish(@event, cancellationToken);
         await mediator.Publish(@event, cancellationToken);
 
-        // Since we do not have an ID, you could return a generic "1" or "0" or switch to Result.Success() if you prefer.
-        return Result<int>.Success(1);
+        // Return the newly created availability's Id
+        return Result<int>.Success(availability.Id);
     }
 }

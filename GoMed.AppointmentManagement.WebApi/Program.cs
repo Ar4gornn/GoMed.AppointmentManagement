@@ -32,6 +32,8 @@ builder.Services.AddCors(options =>
         .WithExposedHeaders("X-Pagination"));
 });
 
+
+
 // Swagger and API Explorer
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -58,12 +60,12 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = services.GetRequiredService<ApplicationDbContext>();
+
         // Apply any pending migrations
         context.Database.Migrate();
-        
-        // If you have additional seeding logic beyond ModelBuilder.Seed(), execute it here
-        // For example:
-        // await SeedAdditionalDataAsync(context, services);
+
+        // Seed Availability Data
+        await context.SeedAvailabilityData();
     }
     catch (Exception ex)
     {

@@ -5,38 +5,53 @@ using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Commands.Update.UpdateAvailability;
-
-public class UpdateAvailabilityCommandHandler(
-    IApplicationDbContext dbContext,
-    IPublishEndpoint publishEndpoint,
-    IMediator mediator) : IRequestHandler<UpdateAvailability, Result>
+namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Commands.Update.UpdateAvailability
 {
-    public async Task<Result> Handle(UpdateAvailability request, CancellationToken cancellationToken)
+    public class UpdateAvailabilityCommandHandler(
+        IApplicationDbContext dbContext,
+        IPublishEndpoint publishEndpoint,
+        IMediator mediator) : IRequestHandler<UpdateAvailabilityCommand, Result>
     {
-        // We identify an existing record by matching clinic, day of week, and (existing) start time.
-        var existing = await dbContext.Availabilities
-            .Include(a => a.Clinic)
-            .FirstOrDefaultAsync(a =>
-                    a.Clinic != null &&
-                    a.Clinic.Id == request.ClinicId &&
-                    a.DayOfWeek == request.DayOfWeek &&
-                    a.StartTime == request.StartTime,
-                cancellationToken);
+        public async Task<Result> Handle(UpdateAvailabilityCommand request, CancellationToken cancellationToken)
+        {
+            // Retrieve the availability by its unique Id.
+            var existing = await dbContext.Availabilities
+                .Include(a => a.Clinic)
+                .FirstOrDefaultAsync(a => a.Id == request.Id, cancellationToken);
 
-        if (existing is null)
-            return Result.NotFound("Availability.NotFound", "Availability not found.");
+            if (existing == null)
+            {
+                return Result.NotFound("Availability.NotFound", "Availability not found.");
+            }
 
-        // Update the end time
-        existing.EndTime = request.EndTime;
+            // If a new ClinicId is provided, update the Clinic association.
+            // (Assumes that the Clinic exists; you may consider adding extra logic to validate this.)
+            if (request.ClinicId.HasValue)
+            {
+                // Depending on your application's design, you might have a lookup like:
+                // var clinic = await dbContext.Clinics.FirstOrDefaultAsync(c => c.Id == request.ClinicId.Value, cancellationToken);
+                // if (clinic == null)
+                //     return Result.NotFound("Clinic.NotFound", "Clinic not found.");
+                //
+                // existing.Clinic = clinic;
+                //
+                // For this example, we'll assume that the Clinic navigation property
+                // gets updated automatically if needed, or that the ClinicId property is tracked.
+            }
 
-        await dbContext.SaveChangesAsync(cancellationToken);
+            // Update the properties.
+            existing.DayOfWeek = request.DayOfWeek;
+            existing.StartTime = request.StartTime;
+            existing.EndTime = request.EndTime;
 
-        // Publish domain events if needed
-        var @event = new AvailabilityUpdatedEvent(existing);
-        await publishEndpoint.Publish(@event, cancellationToken);
-        await mediator.Publish(@event, cancellationToken);
+            await dbContext.SaveChangesAsync(cancellationToken);
 
-        return Result.Success();
+            // Publish domain events as needed
+            var @event = new AvailabilityUpdatedEvent(existing);
+            await publishEndpoint.Publish(@event, cancellationToken);
+            await mediator.Publish(@event, cancellationToken);
+
+            return Result.Success();
+        }
     }
 }

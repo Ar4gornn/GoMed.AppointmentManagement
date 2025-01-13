@@ -1,16 +1,21 @@
 using GoMed.AppointmentManagement.Application.Common.Models;
 using MediatR;
 
-namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Commands.Update.UpdateAvailability;
-
-public class UpdateAvailability : IRequest<Result>
+namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Commands.Update.UpdateAvailability
 {
-    public Guid ClinicId { get; init; }
-    public int DayOfWeek { get; init; }
+    /// <summary>
+    /// Command to update an existing Availability.
+    /// </summary>
+    public class UpdateAvailabilityCommand : IRequest<Result>
+    {
+        public int Id { get; set; }
 
-    // For updating, we keep StartTime as part of the "composite key" to look up the record.
-    public DateTimeOffset StartTime { get; init; }
+        public int DayOfWeek { get; set; }
 
-    // The new EndTime to update to
-    public DateTimeOffset EndTime { get; init; }
+        public DateTimeOffset StartTime { get; set; }
+
+        public DateTimeOffset EndTime { get; set; }
+
+        public int? ClinicId { get; set; }
+    }
 }
