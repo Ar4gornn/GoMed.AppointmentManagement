@@ -10,7 +10,9 @@ namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Comman
     public class UpdateAvailabilityCommandHandler(
         IApplicationDbContext dbContext,
         IPublishEndpoint publishEndpoint,
-        IMediator mediator) : IRequestHandler<UpdateAvailabilityCommand, Result>
+        IMediator mediator,
+        IAuthUserService authUserService
+    ) : IRequestHandler<UpdateAvailabilityCommand, Result>
     {
         public async Task<Result> Handle(UpdateAvailabilityCommand request, CancellationToken cancellationToken)
         {
@@ -24,22 +26,8 @@ namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Comman
                 return Result.NotFound("Availability.NotFound", "Availability not found.");
             }
 
-            // If a new ClinicId is provided, update the Clinic association.
-            // (Assumes that the Clinic exists; you may consider adding extra logic to validate this.)
-            if (request.ClinicId.HasValue)
-            {
-                // Depending on your application's design, you might have a lookup like:
-                // var clinic = await dbContext.Clinics.FirstOrDefaultAsync(c => c.Id == request.ClinicId.Value, cancellationToken);
-                // if (clinic == null)
-                //     return Result.NotFound("Clinic.NotFound", "Clinic not found.");
-                //
-                // existing.Clinic = clinic;
-                //
-                // For this example, we'll assume that the Clinic navigation property
-                // gets updated automatically if needed, or that the ClinicId property is tracked.
-            }
-
-            // Update the properties.
+            
+            // Update the properties
             existing.DayOfWeek = request.DayOfWeek;
             existing.StartTime = request.StartTime;
             existing.EndTime = request.EndTime;

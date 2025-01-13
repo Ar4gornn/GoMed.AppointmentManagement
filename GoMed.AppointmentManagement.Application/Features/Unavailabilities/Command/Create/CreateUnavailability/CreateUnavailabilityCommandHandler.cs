@@ -13,19 +13,30 @@ namespace GoMed.AppointmentManagement.Application.Features.Unavailabilities.Comm
         private readonly IApplicationDbContext _dbContext;
         private readonly IPublishEndpoint _publishEndpoint;
         private readonly IMediator _mediator;
+        private readonly IAuthUserService _authUserService;
 
         public CreateUnavailabilityCommandHandler(
             IApplicationDbContext dbContext,
             IPublishEndpoint publishEndpoint,
-            IMediator mediator)
+            IMediator mediator,
+            IAuthUserService authUserService
+        )
         {
             _dbContext = dbContext;
             _publishEndpoint = publishEndpoint;
             _mediator = mediator;
+            _authUserService = authUserService;
         }
 
         public async Task<Result<int>> Handle(CreateUnavailability request, CancellationToken cancellationToken)
         {
+            // First, ensure user can access the specified clinic
+            if (!_authUserService.CanAccessClinic(request.ClinicId))
+            {
+                return Result<int>.Forbidden("Unavailability.Forbidden",
+                    "You do not have permission to create unavailability for this clinic.");
+            }
+
             // Validate clinic exists
             var clinic = await _dbContext.Clinics
                 .FirstOrDefaultAsync(c => c.Id == request.ClinicId, cancellationToken);

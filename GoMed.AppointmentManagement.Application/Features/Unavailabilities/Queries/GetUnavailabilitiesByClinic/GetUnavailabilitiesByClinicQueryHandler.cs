@@ -9,14 +9,26 @@ namespace GoMed.AppointmentManagement.Application.Features.Unavailabilities.Quer
     public class GetUnavailabilitiesByClinicQueryHandler : IRequestHandler<GetUnavailabilitiesByClinic, Result<List<ReadUnavailabilityDto>>>
     {
         private readonly IApplicationDbContext _dbContext;
+        private readonly IAuthUserService _authUserService;
 
-        public GetUnavailabilitiesByClinicQueryHandler(IApplicationDbContext dbContext)
+        public GetUnavailabilitiesByClinicQueryHandler(
+            IApplicationDbContext dbContext,
+            IAuthUserService authUserService
+        )
         {
             _dbContext = dbContext;
+            _authUserService = authUserService;
         }
 
         public async Task<Result<List<ReadUnavailabilityDto>>> Handle(GetUnavailabilitiesByClinic request, CancellationToken cancellationToken)
         {
+            // Check clinic access
+            if (!_authUserService.CanAccessClinic(request.ClinicId))
+            {
+                return Result<List<ReadUnavailabilityDto>>.Forbidden("Unavailability.Forbidden",
+                    "You do not have permission to view unavailabilities for this clinic.");
+            }
+
             var results = await _dbContext.Unavailabilities
                 .AsNoTracking()
                 .Where(u => u.ClinicId == request.ClinicId)

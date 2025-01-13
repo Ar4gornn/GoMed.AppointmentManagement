@@ -4,34 +4,46 @@ using GoMed.AppointmentManagement.Contracts.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Queries.GetAll.GetAllAppointmentTypesQueries;
-
-public class GetAllAppointmentTypesQueryHandler(
-    IApplicationDbContext dbContext)
-    : IRequestHandler<GetAllAppointmentTypes, Result<List<ReadAppointmentTypeDto>>>
+namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Queries.GetAll.GetAllAppointmentTypesQueries
 {
-    public async Task<Result<List<ReadAppointmentTypeDto>>> Handle(GetAllAppointmentTypes request, CancellationToken cancellationToken)
+    public class GetAllAppointmentTypesQueryHandler(
+        IApplicationDbContext dbContext,
+        IAuthUserService authUserService
+    ) : IRequestHandler<GetAllAppointmentTypes, Result<List<ReadAppointmentTypeDto>>>
     {
-        IQueryable<Domain.Entities.AppointmentType> query = dbContext.AppointmentTypes.AsNoTracking();
-
-        // If filtering by Clinic
-        if (request.ClinicId != Guid.Empty)
+        public async Task<Result<List<ReadAppointmentTypeDto>>> Handle(GetAllAppointmentTypes request, CancellationToken cancellationToken)
         {
-            query = query.Where(a => a.ClinicId == request.ClinicId);
-        }
-
-        var list = await query
-            .Select(a => new ReadAppointmentTypeDto
+            // If filtering by a specific clinic, check access
+            if (request.ClinicId != Guid.Empty)
             {
-                Id = a.Id,
-                ClinicId = a.ClinicId,
-                Name = a.Name,
-                DurationInMinutes = a.DurationInMinutes,
-                Color = a.Color,
-                AllowForPatientBooking = a.AllowForPatientBooking
-            })
-            .ToListAsync(cancellationToken);
+                if (!authUserService.CanAccessClinic(request.ClinicId))
+                {
+                    return Result<List<ReadAppointmentTypeDto>>.Forbidden("AppointmentType.Forbidden",
+                        "You do not have permission to view appointment types in this clinic.");
+                }
+            }
 
-        return Result<List<ReadAppointmentTypeDto>>.Success(list);
+            IQueryable<Domain.Entities.AppointmentType> query = dbContext.AppointmentTypes.AsNoTracking();
+
+            // Filter by clinic if provided
+            if (request.ClinicId != Guid.Empty)
+            {
+                query = query.Where(a => a.ClinicId == request.ClinicId);
+            }
+
+            var list = await query
+                .Select(a => new ReadAppointmentTypeDto
+                {
+                    Id = a.Id,
+                    ClinicId = a.ClinicId,
+                    Name = a.Name,
+                    DurationInMinutes = a.DurationInMinutes,
+                    Color = a.Color,
+                    AllowForPatientBooking = a.AllowForPatientBooking
+                })
+                .ToListAsync(cancellationToken);
+
+            return Result<List<ReadAppointmentTypeDto>>.Success(list);
+        }
     }
 }

@@ -4,20 +4,28 @@ using GoMed.AppointmentManagement.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Set.SetAvailabilities
 {
     public class SetAvailabilitiesCommandHandler : IRequestHandler<SetAvailabilities, Result>
     {
         private readonly IApplicationDbContext _dbContext;
+        private readonly IAuthUserService _authUserService;
 
-        public SetAvailabilitiesCommandHandler(IApplicationDbContext dbContext)
+        public SetAvailabilitiesCommandHandler(IApplicationDbContext dbContext, IAuthUserService authUserService)
         {
             _dbContext = dbContext;
+            _authUserService = authUserService;
         }
 
         public async Task<Result> Handle(SetAvailabilities request, CancellationToken cancellationToken)
         {
+            // Check if user can access the target clinic
+            if (!_authUserService.CanAccessClinic(request.ClinicId))
+            {
+                return Result.Forbidden("Availability.Forbidden",
+                    "You do not have permission to set availabilities for this clinic.");
+            }
+
             // Validate the clinic exists along with its availabilities
             var clinic = await _dbContext.Clinics
                 .Include(c => c.Availabilities)
@@ -35,7 +43,6 @@ namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Set.Se
                 .ToHashSet();
 
             // 1) Remove availabilities that exist in the clinic but are not present in the incoming list.
-            // This removes availabilities that the client has omitted.
             var availabilitiesToRemove = clinic.Availabilities
                 .Where(a => !incomingIds.Contains(a.Id))
                 .ToList();
@@ -50,18 +57,17 @@ namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Set.Se
             {
                 if (item.Id.HasValue)
                 {
-                    // If an ID is provided, try to find the existing availability.
                     var existing = clinic.Availabilities.FirstOrDefault(a => a.Id == item.Id.Value);
                     if (existing != null)
                     {
-                        // Update the existing availability's properties.
+                        // Update
                         existing.DayOfWeek = item.DayOfWeek;
                         existing.StartTime = item.StartTime;
                         existing.EndTime = item.EndTime;
                     }
                     else
                     {
-                        // If the provided ID is not found, create a new availability.
+                        // Create new
                         var newAvailability = new Availability
                         {
                             Clinic = clinic,
@@ -74,7 +80,7 @@ namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Set.Se
                 }
                 else
                 {
-                    // No ID provided: create a new availability.
+                    // Create new
                     var newAvailability = new Availability
                     {
                         Clinic = clinic,
@@ -86,9 +92,8 @@ namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Set.Se
                 }
             }
 
-            // 3) Persist the changes
+            // 3) Persist changes
             await _dbContext.SaveChangesAsync(cancellationToken);
-
             return Result.Success();
         }
     }

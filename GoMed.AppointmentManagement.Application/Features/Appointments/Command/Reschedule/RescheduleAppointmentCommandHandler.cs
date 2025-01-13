@@ -1,8 +1,7 @@
-using GoMed.AppointmentManagement.Domain.Entities;
+using GoMed.AppointmentManagement.Contracts.Interfaces;
 using GoMed.AppointmentManagement.Domain.Events;
 using GoMed.AppointmentManagement.Persistence;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.Reschedule
 {
@@ -10,20 +9,34 @@ namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IMediator _mediator;
+        private readonly IAuthUserService _authUserService;
 
-        public RescheduleAppointmentCommandHandler(ApplicationDbContext dbContext, IMediator mediator)
+        public RescheduleAppointmentCommandHandler(
+            ApplicationDbContext dbContext,
+            IMediator mediator,
+            IAuthUserService authUserService)
         {
             _dbContext = dbContext;
             _mediator = mediator;
+            _authUserService = authUserService;
         }
 
         public async Task Handle(RescheduleAppointmentCommand request, CancellationToken cancellationToken)
         {
-            var appointment = await _dbContext.Appointments.FindAsync(new object?[] { request.AppointmentId }, cancellationToken);
+            var appointment = await _dbContext.Appointments.FindAsync(
+                new object?[] { request.AppointmentId },
+                cancellationToken);
 
             if (appointment == null)
             {
                 throw new KeyNotFoundException($"Appointment with Id {request.AppointmentId} not found.");
+            }
+
+            // Check clinic access
+            if (!_authUserService.CanAccessClinic(appointment.ClinicId))
+            {
+                throw new UnauthorizedAccessException(
+                    "You do not have permission to reschedule an appointment in this clinic.");
             }
 
             appointment.StartAt = request.StartAt;

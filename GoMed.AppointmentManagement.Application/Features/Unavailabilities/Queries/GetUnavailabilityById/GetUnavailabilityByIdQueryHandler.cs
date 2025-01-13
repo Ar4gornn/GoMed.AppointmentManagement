@@ -9,14 +9,26 @@ namespace GoMed.AppointmentManagement.Application.Features.Unavailabilities.Quer
     public class GetUnavailabilityByIdQueryHandler : IRequestHandler<GetUnavailabilityById, Result<ReadUnavailabilityDto>>
     {
         private readonly IApplicationDbContext _dbContext;
+        private readonly IAuthUserService _authUserService;
 
-        public GetUnavailabilityByIdQueryHandler(IApplicationDbContext dbContext)
+        public GetUnavailabilityByIdQueryHandler(
+            IApplicationDbContext dbContext,
+            IAuthUserService authUserService
+        )
         {
             _dbContext = dbContext;
+            _authUserService = authUserService;
         }
 
-        public async Task<Result<ReadUnavailabilityDto>> Handle(Queries.GetUnavailabilityById.GetUnavailabilityById request, CancellationToken cancellationToken)
+        public async Task<Result<ReadUnavailabilityDto>> Handle(GetUnavailabilityById request, CancellationToken cancellationToken)
         {
+            // Check clinic access
+            if (!_authUserService.CanAccessClinic(request.ClinicId))
+            {
+                return Result<ReadUnavailabilityDto>.Forbidden("Unavailability.Forbidden",
+                    "You do not have permission to view unavailability for this clinic.");
+            }
+
             var entity = await _dbContext.Unavailabilities
                 .AsNoTracking()
                 .FirstOrDefaultAsync(
@@ -36,7 +48,7 @@ namespace GoMed.AppointmentManagement.Application.Features.Unavailabilities.Quer
                 EndDateTime = entity.EndTime,
                 IsAllDay = entity.IsAllDay,
 
-                // If you still want to map to the separate StartTime/EndTime fields
+                // Mapping these again if you want them separately
                 StartTime = entity.StartTime,
                 EndTime = entity.EndTime
             };
