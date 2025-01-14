@@ -32,7 +32,7 @@ namespace GoMed.AppointmentManagement.Application.Features.Unavailabilities.Comm
             // Check clinic access
             if (!_authUserService.CanAccessClinic(request.ClinicId))
             {
-                return Result.Forbidden("Unavailability.Forbidden",
+                return Result.Unauthorized("Unavailability.Unauthorized",
                     "You do not have permission to delete unavailability for this clinic.");
             }
 

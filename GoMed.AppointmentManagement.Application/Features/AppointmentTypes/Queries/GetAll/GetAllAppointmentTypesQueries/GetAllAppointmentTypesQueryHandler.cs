@@ -18,7 +18,7 @@ namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Quer
             {
                 if (!authUserService.CanAccessClinic(request.ClinicId))
                 {
-                    return Result<List<ReadAppointmentTypeDto>>.Forbidden("AppointmentType.Forbidden",
+                    return Result<List<ReadAppointmentTypeDto>>.Unauthorized("AppointmentType.Unauthorized",
                         "You do not have permission to view appointment types in this clinic.");
                 }
             }

@@ -22,10 +22,10 @@ namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Quer
                 return Result<ReadAppointmentTypeDto>.NotFound("AppointmentType.NotFound", "Appointment type does not exist.");
             }
 
-            // Check clinic access. If ClinicId is null, return Forbidden.
+            // Check clinic access. If ClinicId is null, return Unauthorized.
             if (!appointmentType.ClinicId.HasValue || !authUserService.CanAccessClinic(appointmentType.ClinicId.Value))
             {
-                return Result<ReadAppointmentTypeDto>.Forbidden("AppointmentType.Forbidden",
+                return Result<ReadAppointmentTypeDto>.Unauthorized("AppointmentType.Unauthorized",
                     "You do not have permission to view appointment types in this clinic.");
             }
 

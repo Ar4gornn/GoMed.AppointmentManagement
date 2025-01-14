@@ -11,7 +11,7 @@ namespace GoMed.AppointmentManagement.Persistence.Seed
                 new Clinic
                 {
                     Id = Guid.Parse("1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"),
-                    ProfessionalId = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), // Matches ProfessionalSeed
+                    ProfessionalId = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
                     ProfessionalName = "Dr. Emily Stone",
                     Name = "Downtown Health Center",
                     Title = "Primary Care Clinic",
@@ -65,7 +65,6 @@ namespace GoMed.AppointmentManagement.Persistence.Seed
                     IsActive = true,
                     PatientBookingIntervalInMinutes = 15
                 }
-                // Add more clinics as needed
             };
         }
     }

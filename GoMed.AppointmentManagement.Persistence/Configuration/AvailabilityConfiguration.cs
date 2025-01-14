@@ -10,7 +10,16 @@ namespace GoMed.AppointmentManagement.Persistence.Configuration
         {
             // Set the primary key
             builder.HasKey(a => a.Id);
+            builder.Property(a => a.StartTime).IsRequired();
+            builder.Property(a => a.EndTime).IsRequired();
 
+            // Configure foreign key relationship via navigation property
+            builder.HasOne(a => a.Clinic)
+                .WithMany(c => c.Availabilities)
+                .HasForeignKey("ClinicId") // Use a shadow property for ClinicId
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.ToTable("Availabilities");
             // Configure auto-generation of the primary key if necessary (for int type)
             builder.Property(a => a.Id)
                 .ValueGeneratedOnAdd();

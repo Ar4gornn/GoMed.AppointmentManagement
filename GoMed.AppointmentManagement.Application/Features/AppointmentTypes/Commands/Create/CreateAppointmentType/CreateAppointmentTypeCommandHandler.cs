@@ -18,7 +18,7 @@ namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Comm
             // Check clinic access
             if (!authUserService.CanAccessClinic(request.ClinicId))
             {
-                return Result<int>.Forbidden("AppointmentType.Forbidden",
+                return Result<int>.Unauthorized("AppointmentType.Unauthorized",
                     "You do not have permission to create an appointment type for this clinic.");
             }
 

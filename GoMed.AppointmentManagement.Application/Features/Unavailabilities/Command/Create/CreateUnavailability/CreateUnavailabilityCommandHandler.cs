@@ -33,7 +33,7 @@ namespace GoMed.AppointmentManagement.Application.Features.Unavailabilities.Comm
             // First, ensure user can access the specified clinic
             if (!_authUserService.CanAccessClinic(request.ClinicId))
             {
-                return Result<int>.Forbidden("Unavailability.Forbidden",
+                return Result<int>.Unauthorized("Unavailability.Unauthorized",
                     "You do not have permission to create unavailability for this clinic.");
             }
 

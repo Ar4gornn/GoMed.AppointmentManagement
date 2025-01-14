@@ -22,7 +22,7 @@ namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Set.Se
             // Check if user can access the target clinic
             if (!_authUserService.CanAccessClinic(request.ClinicId))
             {
-                return Result.Forbidden("Availability.Forbidden",
+                return Result.Unauthorized("Availability.Unauthorized",
                     "You do not have permission to set availabilities for this clinic.");
             }
 

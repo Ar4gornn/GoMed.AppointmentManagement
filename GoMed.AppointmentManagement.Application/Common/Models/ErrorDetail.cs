@@ -12,7 +12,6 @@ public enum ErrorType
     Validation,
     NotFound,
     Conflict,
-    Forbidden,
     BadRequest,
     InternalServerError,
     Unauthorized

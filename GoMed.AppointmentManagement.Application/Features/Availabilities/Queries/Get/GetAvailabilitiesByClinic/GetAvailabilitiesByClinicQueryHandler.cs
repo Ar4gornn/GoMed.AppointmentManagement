@@ -18,7 +18,7 @@ namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Get.Ge
             // Check if user can access this clinic
             if (!authUserService.CanAccessClinic(request.ClinicId))
             {
-                return Result<List<ReadAvailabilityDto>>.Forbidden("Availability.Forbidden",
+                return Result<List<ReadAvailabilityDto>>.Unauthorized("Availability.Unauthorized",
                     "You do not have permission to view availabilities for this clinic.");
             }
 

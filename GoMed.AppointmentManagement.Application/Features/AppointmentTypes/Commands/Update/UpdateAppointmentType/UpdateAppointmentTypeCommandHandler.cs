@@ -27,7 +27,7 @@ namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Comm
             // Check if the current ClinicId is valid and accessible
             if (!appointmentType.ClinicId.HasValue || !authUserService.CanAccessClinic(appointmentType.ClinicId.Value))
             {
-                return Result<int>.Forbidden("AppointmentType.Forbidden",
+                return Result<int>.Unauthorized("AppointmentType.Unauthorized",
                     "You do not have permission to update appointment types in this clinic.");
             }
             

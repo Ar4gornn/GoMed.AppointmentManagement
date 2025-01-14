@@ -20,7 +20,7 @@ public class GlobalExceptionHandler : IExceptionHandler
         {
             Status = StatusCodes.Status500InternalServerError,
             Title = "Internal Server Error",
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
             Detail =
                 "Something went wrong while processing your request. If this issue persists, please contact support.",
         });
