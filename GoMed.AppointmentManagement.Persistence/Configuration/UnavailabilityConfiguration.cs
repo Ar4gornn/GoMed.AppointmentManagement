@@ -12,7 +12,7 @@ public class UnavailabilityConfiguration: IEntityTypeConfiguration<Unavailabilit
         builder.Property(e => e.Id).UseIdentityAlwaysColumn().HasIdentityOptions(startValue:123);
         
         builder.Property(e => e.ClinicId).IsRequired();
-        builder.Property(e => e.StartTime).IsRequired();
+        builder.Property(e => e.StartAt).IsRequired();
         builder.Property(e => e.IsAllDay).IsRequired();
         
         builder.HasIndex(e => e.ClinicId);

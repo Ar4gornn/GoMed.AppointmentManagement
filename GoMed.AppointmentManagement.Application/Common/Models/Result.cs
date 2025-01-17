@@ -32,8 +32,8 @@ public class Result
     public static Result Conflict(string code, string message) =>
         Failure(new ErrorDetail(ErrorType.Conflict, code, message));
 
-    public static Result Forbidden(string code, string message) =>
-        Failure(new ErrorDetail(ErrorType.Forbidden, code, message));
+    public static Result Unauthorized(string code, string message) =>
+        Failure(new ErrorDetail(ErrorType.Unauthorized, code, message));
 
     public static Result BadRequest(string code, string message) =>
         Failure(new ErrorDetail(ErrorType.BadRequest, code, message));
@@ -72,7 +72,7 @@ public class Result
                     Title = "An error occurred",
                     Detail = Error.Message,
                     Status = StatusCodes.Status500InternalServerError,
-                    Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1"
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
                 })
             };
     }
@@ -106,8 +106,8 @@ public class Result<T> : Result
     public new static Result<T> Conflict(string code, string message) =>
         Failure(new ErrorDetail(ErrorType.Conflict, code, message));
 
-    public new static Result<T> Forbidden(string code, string message) =>
-        Failure(new ErrorDetail(ErrorType.Forbidden, code, message));
+    public new static Result<T> Unauthorized(string code, string message) =>
+        Failure(new ErrorDetail(ErrorType.Unauthorized, code, message));
 
     public new static Result<T> BadRequest(string code, string message) =>
         Failure(new ErrorDetail(ErrorType.BadRequest, code, message));
@@ -119,7 +119,7 @@ public class Result<T> : Result
         return IsSuccess ? onSuccess(Value!) : onFailure(Error!);
     }
 
-    public new IResult ToIResult()
+    public new IResult ToIResult(int status201Created)
     {
         return IsSuccess
             ? Results.Ok(Value)
@@ -146,7 +146,7 @@ public class Result<T> : Result
                     Title = "An error occurred",
                     Detail = Error.Message,
                     Status = StatusCodes.Status500InternalServerError,
-                    Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1"
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
                 })
             };
     }

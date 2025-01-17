@@ -1,0 +1,3 @@
+namespace GoMed.AppointmentManagement.Domain.Events.AppointmentType;
+
+public record AppointmentTypeCreatedEvent(Entities.AppointmentType AppointmentTypeData);

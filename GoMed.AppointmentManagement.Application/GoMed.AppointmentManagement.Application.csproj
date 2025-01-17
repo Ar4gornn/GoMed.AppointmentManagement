@@ -7,9 +7,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Features\AppointmentManagement\" />
-        <Folder Include="Features\WeatherForecasts\Commands\Delete\"/>
-        <Folder Include="Features\WeatherForecasts\Commands\Update\"/>
+        <Folder Include="Consumers\External\" />
+        <Folder Include="Consumers\Internal\" />
+        <Folder Include="Features\Appointments\Command\Set\" />
+        <Folder Include="Features\Availabilities\Commands\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -24,6 +25,21 @@
     <ItemGroup>
         <ProjectReference Include="..\GoMed.AppointmentManagement.Contracts\GoMed.AppointmentManagement.Contracts.csproj"/>
         <ProjectReference Include="..\GoMed.AppointmentManagement.Domain\GoMed.AppointmentManagement.Domain.csproj"/>
+        <ProjectReference Include="..\GoMed.AppointmentManagement.Persistence\GoMed.AppointmentManagement.Persistence.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Features\WeatherForecasts\**" />
+      <Compile Remove="Consumers\Internal\WeatherForecastCreatedConsumer.cs" />
+      <Compile Remove="Consumers\External\ExternalWeatherAnnouncementCreatedEventConsumer.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Features\WeatherForecasts\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Features\WeatherForecasts\**" />
     </ItemGroup>
 
 </Project>
