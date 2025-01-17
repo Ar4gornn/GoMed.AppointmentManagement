@@ -1,6 +1,6 @@
 using GoMed.AppointmentManagement.Application.Features.Appointments.Dtos;
 using GoMed.AppointmentManagement.Contracts.Interfaces;
-using GoMed.AppointmentManagement.Persistence;
+
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,10 +8,10 @@ namespace GoMed.AppointmentManagement.Application.Features.Appointments.Queries.
 {
     public class GetAppointmentByClinicIdQueryHandler : IRequestHandler<GetAppointmentByClinicIdQuery, List<ReadAppointmentDto>>
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IApplicationDbContext _dbContext;
         private readonly IAuthUserService _authUserService;
 
-        public GetAppointmentByClinicIdQueryHandler(ApplicationDbContext dbContext, IAuthUserService authUserService)
+        public GetAppointmentByClinicIdQueryHandler(IApplicationDbContext dbContext, IAuthUserService authUserService)
         {
             _dbContext = dbContext;
             _authUserService = authUserService;

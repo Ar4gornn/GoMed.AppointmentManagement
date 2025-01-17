@@ -29,6 +29,7 @@ namespace GoMed.AppointmentManagement.Application.Features.Unavailabilities.Quer
                     "You do not have permission to view unavailabilities for this clinic.");
             }
 
+            // TODO: Query StartAt between From To 
             var results = await _dbContext.Unavailabilities
                 .AsNoTracking()
                 .Where(u => u.ClinicId == request.ClinicId)

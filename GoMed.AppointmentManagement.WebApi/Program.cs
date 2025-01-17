@@ -53,29 +53,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Apply migrations and seed the database
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    try
-    {
-        var context = services.GetRequiredService<ApplicationDbContext>();
-
-        // Apply any pending migrations
-        context.Database.Migrate();
-
-        // Seed Availability Data
-        await context.SeedAvailabilityData();
-    }
-    catch (Exception ex)
-    {
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "An error occurred while migrating or seeding the database.");
-        // Optionally, rethrow the exception if you want the application to stop
-        // throw;
-    }
-}
-
 // Exception handling
 app.UseExceptionHandler();
 

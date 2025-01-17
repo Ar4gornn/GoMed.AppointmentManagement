@@ -25,7 +25,6 @@
     <ItemGroup>
         <ProjectReference Include="..\GoMed.AppointmentManagement.Contracts\GoMed.AppointmentManagement.Contracts.csproj"/>
         <ProjectReference Include="..\GoMed.AppointmentManagement.Domain\GoMed.AppointmentManagement.Domain.csproj"/>
-        <ProjectReference Include="..\GoMed.AppointmentManagement.Persistence\GoMed.AppointmentManagement.Persistence.csproj" />
     </ItemGroup>
 
     <ItemGroup>

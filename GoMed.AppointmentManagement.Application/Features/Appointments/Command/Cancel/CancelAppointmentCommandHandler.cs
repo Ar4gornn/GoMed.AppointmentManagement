@@ -1,19 +1,19 @@
 using GoMed.AppointmentManagement.Contracts.Interfaces;
 using GoMed.AppointmentManagement.Domain.Enums;
 using GoMed.AppointmentManagement.Domain.Events;
-using GoMed.AppointmentManagement.Persistence;
+
 using MediatR;
 
 namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.Cancel
 {
     public class CancelAppointmentCommandHandler : IRequestHandler<CancelAppointmentCommand>
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IApplicationDbContext _dbContext;
         private readonly IMediator _mediator;
         private readonly IAuthUserService _authUserService;
 
         public CancelAppointmentCommandHandler(
-            ApplicationDbContext dbContext,
+            IApplicationDbContext dbContext,
             IMediator mediator,
             IAuthUserService authUserService)
         {

@@ -1,3 +1,4 @@
+using System.Text.Json;
 using GoMed.AppointmentManagement.Contracts.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
@@ -80,52 +81,52 @@ public class AuthUserService : IAuthUserService
                     ? name.ToString()
                     : throw new ArgumentException("User Name not found in request headers");
 
-                // Example of parsing “X-User-Roles” which might be comma-separated:
-                // e.g. "admin,professional"
-                if (httpContext.Request.Headers.TryGetValue("X-User-Roles", out var rolesHeader))
+                switch (UserType)
                 {
-                    var roles = rolesHeader.ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)
-                        .Select(r => r.Trim())
-                        .ToList();
-                    UserRoles = roles;
-                }
-                else
-                {
-                    // Provide a default or handle if no roles provided
-                    UserRoles = new List<string>();
+                    case "admin":
+                        return;
+                    case "professional":
+                    {
+                        if (httpContext.Request.Headers.TryGetValue("X-User-Roles", out var rolesHeader))
+                        {
+                            var roles = JsonSerializer.Deserialize<List<string>>(rolesHeader);
+                            UserRoles = roles ?? [];
+                        }
+                        else UserRoles = [];
+                        // Example of parsing “X-Clinic-Ids” (comma-separated GUIDs)
+                        if (httpContext.Request.Headers.TryGetValue("X-Clinic-Ids", out var clinicsHeader))
+                        {
+                            var clinics = JsonSerializer.Deserialize<List<Guid>>(clinicsHeader);
+                            ClinicIds = clinics ?? [];
+                        }
+                        else
+                        {
+                            ClinicIds = [];
+                        }
+
+                        break;
+                    }
+                    case "patient":
+                    {
+                        if (httpContext.Request.Headers.TryGetValue("X-Patient-Ids", out var patientsHeader))
+                        {
+                            var patients = JsonSerializer.Deserialize<List<Guid>>(patientsHeader);
+                            PatientIds = patients ?? throw new ArgumentException(nameof(patientsHeader),
+                                "Patient user invalid headers");
+                            ;
+                        }
+                        else throw new ArgumentException(nameof(patientsHeader), "Patient user invalid headers");
+                    }
+                        ;
+                        break;
                 }
 
-                // Example of parsing “X-Clinic-Ids” (comma-separated GUIDs)
-                if (httpContext.Request.Headers.TryGetValue("X-Clinic-Ids", out var clinicsHeader))
-                {
-                    var clinics = clinicsHeader.ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)
-                        .Select(x => Guid.Parse(x.Trim()))
-                        .ToList();
-                    ClinicIds = clinics;
-                }
-                else
-                {
-                    ClinicIds = new List<Guid>();
-                }
-
-                // Example of parsing “X-Patient-Ids” (comma-separated GUIDs)
-                if (httpContext.Request.Headers.TryGetValue("X-Patient-Ids", out var patientsHeader))
-                {
-                    var patients = patientsHeader.ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)
-                        .Select(x => Guid.Parse(x.Trim()))
-                        .ToList();
-                    PatientIds = patients;
-                }
-                else
-                {
-                    PatientIds = new List<Guid>();
-                }
+                
             }
         }
 
         public bool IsEqualToUserId(Guid userId)
         {
-            // In dev mode, we can assume user always has access
             if (IsDevelopment) return true;
 
             return UserId == userId;
@@ -133,40 +134,15 @@ public class AuthUserService : IAuthUserService
 
         public bool CanAccessClinic(Guid clinicId)
         {
-            if (IsDevelopment) return true;
+            if (IsDevelopment || UserType == "admin") return true;
 
-            // If the user has 'admin' role => they can access any clinic
-            if (UserRoles.Contains("admin", StringComparer.OrdinalIgnoreCase))
-                return true;
-
-            // If user is 'professional' (or whichever role you choose)
-            // and the clinicId is in the user's ClinicIds => access granted
-            if (UserRoles.Contains("professional", StringComparer.OrdinalIgnoreCase) &&
-                ClinicIds.Contains(clinicId))
-            {
-                return true;
-            }
-
-            // Otherwise, no access
-            return false;
+            return UserType == "professional" && ClinicIds.Contains(clinicId);
         }
 
         public bool CanAccessPatient(Guid patientId)
         {
-            if (IsDevelopment) return true;
+            if (IsDevelopment || UserType == "admin") return true;
 
-            // If the user has 'admin' role => they can access any patient
-            if (UserRoles.Contains("admin", StringComparer.OrdinalIgnoreCase))
-                return true;
-
-            // If user is 'patient' and the requested patientId is in the user's PatientIds
-            if (UserRoles.Contains("patient", StringComparer.OrdinalIgnoreCase) &&
-                PatientIds.Contains(patientId))
-            {
-                return true;
-            }
-
-            // Otherwise, no access
-            return false;
+            return UserType == "professional" && PatientIds.Contains(patientId);
         }
     }
