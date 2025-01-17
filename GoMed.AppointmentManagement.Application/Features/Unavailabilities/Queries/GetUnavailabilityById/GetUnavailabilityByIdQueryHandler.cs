@@ -44,13 +44,9 @@ namespace GoMed.AppointmentManagement.Application.Features.Unavailabilities.Quer
             {
                 Id = entity.Id,
                 ClinicId = entity.ClinicId ?? Guid.Empty,
-                StartDateTime = entity.StartTime,
-                EndDateTime = entity.EndTime,
-                IsAllDay = entity.IsAllDay,
-
-                // Mapping these again if you want them separately
-                StartTime = entity.StartTime,
-                EndTime = entity.EndTime
+                StartAt = entity.StartAt,
+                EndAt = entity.EndAt,
+                IsAllDay = entity.IsAllDay
             };
 
             return Result<ReadUnavailabilityDto>.Success(dto);

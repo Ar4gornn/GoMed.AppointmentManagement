@@ -17,8 +17,8 @@ namespace GoMed.AppointmentManagement.Persistence.Seed
                 {
                     Id = 1,
                     ClinicId = downtownClinicId,
-                    StartTime = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
-                    EndTime = new DateTimeOffset(2025, 1, 1, 23, 59, 59, TimeSpan.Zero),
+                    StartAt = new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero),
+                    EndAt = new DateTimeOffset(2025, 1, 1, 23, 59, 59, TimeSpan.Zero),
                     IsAllDay = true
                 },
 
@@ -27,8 +27,8 @@ namespace GoMed.AppointmentManagement.Persistence.Seed
                 {
                     Id = 2,
                     ClinicId = downtownClinicId,
-                    StartTime = new DateTimeOffset(2025, 2, 15, 13, 0, 0, TimeSpan.Zero),
-                    EndTime = new DateTimeOffset(2025, 2, 15, 17, 0, 0, TimeSpan.Zero),
+                    StartAt = new DateTimeOffset(2025, 2, 15, 13, 0, 0, TimeSpan.Zero),
+                    EndAt = new DateTimeOffset(2025, 2, 15, 17, 0, 0, TimeSpan.Zero),
                     IsAllDay = false
                 },
 
@@ -37,8 +37,8 @@ namespace GoMed.AppointmentManagement.Persistence.Seed
                 {
                     Id = 3,
                     ClinicId = uptownClinicId,
-                    StartTime = new DateTimeOffset(2025, 3, 20, 0, 0, 0, TimeSpan.Zero),
-                    EndTime = new DateTimeOffset(2025, 3, 20, 23, 59, 59, TimeSpan.Zero),
+                    StartAt = new DateTimeOffset(2025, 3, 20, 0, 0, 0, TimeSpan.Zero),
+                    EndAt = new DateTimeOffset(2025, 3, 20, 23, 59, 59, TimeSpan.Zero),
                     IsAllDay = true
                 },
 
@@ -47,8 +47,8 @@ namespace GoMed.AppointmentManagement.Persistence.Seed
                 {
                     Id = 4,
                     ClinicId = uptownClinicId,
-                    StartTime = new DateTimeOffset(2025, 4, 10, 9, 0, 0, TimeSpan.Zero),
-                    EndTime = new DateTimeOffset(2025, 4, 10, 12, 0, 0, TimeSpan.Zero),
+                    StartAt = new DateTimeOffset(2025, 4, 10, 9, 0, 0, TimeSpan.Zero),
+                    EndAt = new DateTimeOffset(2025, 4, 10, 12, 0, 0, TimeSpan.Zero),
                     IsAllDay = false
                 },
 
@@ -57,8 +57,8 @@ namespace GoMed.AppointmentManagement.Persistence.Seed
                 {
                     Id = 5,
                     ClinicId = downtownClinicId,
-                    StartTime = new DateTimeOffset(2025, 5, 1, 0, 0, 0, TimeSpan.Zero),
-                    EndTime = new DateTimeOffset(2025, 5, 1, 23, 59, 59, TimeSpan.Zero),
+                    StartAt = new DateTimeOffset(2025, 5, 1, 0, 0, 0, TimeSpan.Zero),
+                    EndAt = new DateTimeOffset(2025, 5, 1, 23, 59, 59, TimeSpan.Zero),
                     IsAllDay = true
                 },
 
@@ -67,8 +67,8 @@ namespace GoMed.AppointmentManagement.Persistence.Seed
                 {
                     Id = 6,
                     ClinicId = uptownClinicId,
-                    StartTime = new DateTimeOffset(2025, 6, 25, 22, 0, 0, TimeSpan.Zero),
-                    EndTime = new DateTimeOffset(2025, 6, 26, 2, 0, 0, TimeSpan.Zero),
+                    StartAt = new DateTimeOffset(2025, 6, 25, 22, 0, 0, TimeSpan.Zero),
+                    EndAt = new DateTimeOffset(2025, 6, 26, 2, 0, 0, TimeSpan.Zero),
                     IsAllDay = false
                 }
             };

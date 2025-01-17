@@ -4,9 +4,7 @@ public class ReadUnavailabilityDto
 {
     public int Id { get; set; }
     public Guid ClinicId { get; set; }
-    public DateTimeOffset StartDateTime { get; set; }  
-    public DateTimeOffset EndDateTime { get; set; }    
+    public DateTimeOffset StartAt { get; set; }  
+    public DateTimeOffset EndAt { get; set; }    
     public bool IsAllDay { get; set; }
-    public DateTimeOffset StartTime { get; set; }
-    public DateTimeOffset EndTime { get; set; }
 }

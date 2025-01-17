@@ -36,11 +36,9 @@ namespace GoMed.AppointmentManagement.Application.Features.Unavailabilities.Quer
                 {
                     Id = u.Id,
                     ClinicId = u.ClinicId ?? Guid.Empty,
-                    StartDateTime = u.StartTime,
-                    EndDateTime = u.EndTime,
+                    StartAt = u.StartAt,
+                    EndAt = u.EndAt,
                     IsAllDay = u.IsAllDay,
-                    StartTime = u.StartTime,
-                    EndTime = u.EndTime
                 })
                 .ToListAsync(cancellationToken);
 

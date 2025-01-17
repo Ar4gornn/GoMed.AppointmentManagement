@@ -37,7 +37,7 @@ namespace GoMed.AppointmentManagement.Persistence.Configuration
 
             // Configure the relationship with Clinic if needed
             builder.HasOne(a => a.Clinic)
-                .WithMany(c => c.Availabilities)  // Assuming Clinic has an ICollection<Availability> Availabilities property.
+                .WithMany(c => c.Availabilities)  // Assuming Clinic has an List<Availability> Availabilities property.
                 .HasForeignKey("ClinicId")        // Optionally specify the FK property name if it's shadow property or explicit.
                 .OnDelete(DeleteBehavior.Cascade);
 

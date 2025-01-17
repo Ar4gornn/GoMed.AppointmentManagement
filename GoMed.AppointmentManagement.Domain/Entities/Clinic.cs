@@ -34,8 +34,8 @@ namespace GoMed.AppointmentManagement.Domain.Entities
 
         public int PatientBookingIntervalInMinutes { get; set; } = 15;  // Interval for patient booking (in minutes)
 
-        public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
-        public ICollection<Availability> Availabilities { get; set; }
-        public ICollection<Unavailability> Unavailabilities { get; set; }
+        public List<Appointment> Appointments { get; set; } = new List<Appointment>();
+        public List<Availability> Availabilities { get; set; }
+        public List<Unavailability> Unavailabilities { get; set; }
     }
 }

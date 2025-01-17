@@ -69,7 +69,7 @@ namespace GoMed.AppointmentManagement.Persistence.Configuration
             builder.Property(c => c.Availabilities).HasColumnType("jsonb")
                 .HasConversion(
                     v => JsonSerializer.Serialize(v,JsonSerializerOptions.Default),
-                    v => JsonSerializer.Deserialize<ICollection<Availability>>(v,JsonSerializerOptions.Default) ?? new List<Availability>()
+                    v => JsonSerializer.Deserialize<List<Availability>>(v,JsonSerializerOptions.Default) ?? new List<Availability>()
                 );
             
             // Indexes
