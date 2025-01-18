@@ -1,5 +1,5 @@
-using GoMed.AppointmentManagement.Application.Features.Availabilities.Get.GetAvailabilitiesByClinic;
-using GoMed.AppointmentManagement.Application.Features.Availabilities.Set.SetAvailabilities;
+using GoMed.AppointmentManagement.Application.Features.Availabilities.Commands.Set;
+using GoMed.AppointmentManagement.Application.Features.Availabilities.Get;
 using GoMed.AppointmentManagement.Domain.Entities;
 using MediatR;
 

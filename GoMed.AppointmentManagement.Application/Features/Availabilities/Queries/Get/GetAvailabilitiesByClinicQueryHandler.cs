@@ -4,15 +4,15 @@ using GoMed.AppointmentManagement.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Get.GetAvailabilitiesByClinic
+namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Get
 {
     public class GetAvailabilitiesByClinicQueryHandler(
         IApplicationDbContext dbContext,
         IAuthUserService authUserService
-    ) : IRequestHandler<Availabilities.Get.GetAvailabilitiesByClinic.GetAvailabilitiesByClinic, Result<List<Availability>>>
+    ) : IRequestHandler<GetAvailabilitiesByClinic, Result<List<Availability>>>
     {
         public async Task<Result<List<Availability>>> Handle(
-            Availabilities.Get.GetAvailabilitiesByClinic.GetAvailabilitiesByClinic request,
+            GetAvailabilitiesByClinic request,
             CancellationToken cancellationToken)
         {
             // Check if user can access this clinic

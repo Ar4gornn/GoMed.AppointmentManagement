@@ -1,7 +1,7 @@
 using GoMed.AppointmentManagement.Application.Common.Models;
 using MediatR;
 
-namespace GoMed.AppointmentManagement.Application.Features.Unavailabilities.Command.Delete.DeleteUnavailability
+namespace GoMed.AppointmentManagement.Application.Features.Unavailabilities.Command.Delete
 {
     public class DeleteUnavailability : IRequest<Result>
     {

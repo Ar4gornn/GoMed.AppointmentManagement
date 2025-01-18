@@ -1,12 +1,10 @@
 using GoMed.AppointmentManagement.Application.Common.Models;
 using GoMed.AppointmentManagement.Contracts.Interfaces;
 using GoMed.AppointmentManagement.Domain.Entities;
-using GoMed.AppointmentManagement.Domain.Events.Unavailability;
-using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace GoMed.AppointmentManagement.Application.Features.Unavailabilities.Command.Create.CreateUnavailability
+namespace GoMed.AppointmentManagement.Application.Features.Unavailabilities.Command.Create
 {
     public class CreateUnavailabilityCommandHandler(
         IApplicationDbContext dbContext,

@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace GoMed.AppointmentManagement.Application.Features.Unavailabilities.Command.Create.CreateUnavailability
+namespace GoMed.AppointmentManagement.Application.Features.Unavailabilities.Command.Create
 {
     public class CreateUnavailabilityValidator : AbstractValidator<CreateUnavailability>
     {

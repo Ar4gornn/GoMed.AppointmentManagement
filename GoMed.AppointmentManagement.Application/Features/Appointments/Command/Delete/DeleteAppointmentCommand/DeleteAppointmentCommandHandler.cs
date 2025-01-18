@@ -1,41 +1,32 @@
+using GoMed.AppointmentManagement.Application.Common.Models;
 using GoMed.AppointmentManagement.Contracts.Interfaces;
-
 using MediatR;
 
 namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.Delete.DeleteAppointmentCommand
 {
-    public class DeleteAppointmentCommandHandler : IRequestHandler<DeleteAppointmentCommand>
+    public class DeleteAppointmentCommandHandler(
+        IApplicationDbContext dbContext,
+        IAuthUserService authUserService
+    ) : IRequestHandler<DeleteAppointmentCommand, Result>
     {
-        private readonly IApplicationDbContext _dbContext;
-        private readonly IAuthUserService _authUserService;
-
-        public DeleteAppointmentCommandHandler(IApplicationDbContext dbContext, IAuthUserService authUserService)
+        public async Task<Result> Handle(DeleteAppointmentCommand request, CancellationToken cancellationToken)
         {
-            _dbContext = dbContext;
-            _authUserService = authUserService;
-        }
-
-        public async Task Handle(DeleteAppointmentCommand request, CancellationToken cancellationToken)
-        {
-            var appointment = await _dbContext.Appointments.FindAsync(
-                new object?[] { request.AppointmentId },
-                cancellationToken);
+            var appointment = await dbContext.Appointments.FindAsync(new object?[] { request.AppointmentId }, cancellationToken);
 
             if (appointment == null)
             {
-                // Optionally ignore if not found or throw exception
-                return;
+                return Result.NotFound("Appointment.NotFound", $"Appointment with Id {request.AppointmentId} not found.");
             }
 
-            // Check clinic access
-            if (!_authUserService.CanAccessClinic(appointment.ClinicId))
+            if (!authUserService.CanAccessClinic(appointment.ClinicId))
             {
-                throw new UnauthorizedAccessException(
-                    "You do not have permission to delete an appointment in this clinic.");
+                return Result.Unauthorized("Appointment.Unauthorized", "You do not have permission to delete this appointment.");
             }
 
-            _dbContext.Appointments.Remove(appointment);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            dbContext.Appointments.Remove(appointment);
+            await dbContext.SaveChangesAsync(cancellationToken);
+
+            return Result.Success();
         }
     }
 }

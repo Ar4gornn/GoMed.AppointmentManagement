@@ -1,11 +1,10 @@
 using GoMed.AppointmentManagement.Application.Common.Models;
 using GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Dtos;
 using GoMed.AppointmentManagement.Contracts.Interfaces;
-using GoMed.AppointmentManagement.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Queries.GetAll.GetAllAppointmentTypesQueries
+namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Queries.GetAll
 {
     public class GetAllAppointmentTypesQueryHandler(
         IApplicationDbContext dbContext,

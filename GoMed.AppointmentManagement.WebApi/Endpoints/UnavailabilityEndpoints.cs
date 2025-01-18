@@ -1,6 +1,6 @@
-using GoMed.AppointmentManagement.Application.Features.Unavailabilities.Command.Create.CreateUnavailability;
-using GoMed.AppointmentManagement.Application.Features.Unavailabilities.Command.Delete.DeleteUnavailability;
-using GoMed.AppointmentManagement.Application.Features.Unavailabilities.Command.Update.UpdateUnavailability;
+using GoMed.AppointmentManagement.Application.Features.Unavailabilities.Command.Create;
+using GoMed.AppointmentManagement.Application.Features.Unavailabilities.Command.Delete;
+using GoMed.AppointmentManagement.Application.Features.Unavailabilities.Command.Update;
 using GoMed.AppointmentManagement.Application.Features.Unavailabilities.Dtos;
 using GoMed.AppointmentManagement.Application.Features.Unavailabilities.Queries.GetUnavailabilitiesByClinic;
 using GoMed.AppointmentManagement.Application.Features.Unavailabilities.Queries.GetUnavailabilityById;
@@ -13,7 +13,7 @@ public static class UnavailabilityEndpoints
     public static void AddUnavailabilityEndpoints(this IEndpointRouteBuilder builder)
     {
         // Clinic-specific unavailability endpoints
-        var clinicGroup = builder.MapGroup("api/v1/unavailabilities/clinics")
+        var clinicGroup = builder.MapGroup("api/v1/clinics/{clinicId:guid}/unavailabilities")
             .WithTags("Clinic Unavailabilities")
             .WithOpenApi();
 

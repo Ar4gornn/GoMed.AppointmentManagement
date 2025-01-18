@@ -1,8 +1,8 @@
 using FluentValidation;
 
-namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Get.GetAvailabilitiesByClinic
+namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Get
 {
-    public class GetAvailabilitiesByClinicValidator : AbstractValidator<Availabilities.Get.GetAvailabilitiesByClinic.GetAvailabilitiesByClinic>
+    public class GetAvailabilitiesByClinicValidator : AbstractValidator<GetAvailabilitiesByClinic>
     {
         public GetAvailabilitiesByClinicValidator()
         {

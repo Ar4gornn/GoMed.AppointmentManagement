@@ -1,7 +1,6 @@
-using System.Linq;
 using FluentValidation;
 
-namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Set.SetAvailabilities
+namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Commands.Set
 {
     public class SetAvailabilitiesValidator : AbstractValidator<SetAvailabilities>
     {

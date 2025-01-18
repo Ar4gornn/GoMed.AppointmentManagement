@@ -8,6 +8,7 @@ using GoMed.AppointmentManagement.Application.Features.Appointments.Command.Upda
 using GoMed.AppointmentManagement.Application.Features.Appointments.Queries.Get.GetAppointmentByClinicIdQuery;
 using GoMed.AppointmentManagement.Application.Features.Appointments.Queries.Get.GetAppointmentByPatientIdQuery;
 using GoMed.AppointmentManagement.Application.Features.Appointments.Dtos;
+using GoMed.AppointmentManagement.Application.Features.Appointments.Queries.GetPatientAppointmentHistoryQuery;
 using MediatR;
 
 namespace GoMed.AppointmentManagement.WebApi.Endpoints;
@@ -17,26 +18,30 @@ public static class AppointmentEndpoints
     public static void AddAppointmentEndpoints(this IEndpointRouteBuilder builder)
     {
         // Patient-related endpoints
-        var patientGroup = builder.MapGroup("api/v1/appointments/patients")
+        var patientGroup = builder.MapGroup("api/v1/patients/{patientId}/appointments")
             .WithTags("Patient Appointments")
             .WithOpenApi();
 
         // Get appointments by PatientId
-        patientGroup.MapGet("/{patientId}", GetByPatientId)
+        patientGroup.MapGet("/", GetByPatientId)
             .Produces<List<ReadAppointmentDto>>(StatusCodes.Status200OK);
 
         // Set Appointment Showed Up
-        patientGroup.MapPut("/{id}/showed-up", SetShowedUp)
+        patientGroup.MapPut("/showed-up/{id}", SetShowedUp)
             .Produces(StatusCodes.Status200OK);
 
         // Cancel an appointment
-        patientGroup.MapPost("/{id}/cancel", Cancel)
+        patientGroup.MapPost("/cancel/{id}", Cancel)
             .Produces(StatusCodes.Status200OK);
+        
+        // Get appointment history by PatientId
+        patientGroup.MapGet("/history", GetPatientAppointmentHistory)
+            .Produces<List<ReadAppointmentDto>>(StatusCodes.Status200OK);
 
 
 
         // Professional-related endpoints
-        var professionalGroup = builder.MapGroup("api/v1/appointments/professionals")
+        var professionalGroup = builder.MapGroup("api/v1/professionals/{professionalId}/appointments")
             .WithTags("Professional Appointments")
             .WithOpenApi();
 
@@ -60,13 +65,19 @@ public static class AppointmentEndpoints
 
 
         // Reschedule an appointment
-        professionalGroup.MapPut("/{id}/reschedule", Reschedule)
+        professionalGroup.MapPut("/reschedule/{id}", Reschedule)
             .Produces<ReadAppointmentDto>(StatusCodes.Status200OK);
 
 
-        // Approve or Decline an appointment
+        // Approve an appointment
         professionalGroup.MapPut("/{id}/approve", Approve)
             .Produces(StatusCodes.Status200OK);
+        
+        // Decline an appointment
+        professionalGroup.MapPut("/{id}/decline", Decline)
+            .Produces(StatusCodes.Status200OK);
+        
+        
     }
 
     // Get Appointments by ClinicId
@@ -94,7 +105,7 @@ public static class AppointmentEndpoints
         var response = await mediator.Send(request);
         return Results.Ok(response);
     }
-
+    
     // Create Appointment
     private static async Task<IResult> Create(
         HttpContext context,
@@ -104,8 +115,17 @@ public static class AppointmentEndpoints
     {
         var command = new CreateAppointmentCommand(requestDto);
         var response = await mediator.Send(command);
-        return Results.Created($"/api/v1/appointments/{response.ClinicId}", response);
+
+        // Here we assume 'response' is of type Result<ReadAppointmentDto>
+        if (!response.Succeeded)
+        {
+            return Results.Problem(response.Message);
+        }
+
+        // Use 'response.Data.ClinicId' instead of 'response.ClinicId'
+        return Results.Created($"/api/v1/appointments/{response.Data.ClinicId}", response.Data);
     }
+
 
     // Update Appointment
     private static async Task<IResult> Update(
@@ -158,20 +178,36 @@ public static class AppointmentEndpoints
     private static async Task<IResult> Approve(
         HttpContext context,
         IMediator mediator,
-        Guid id,
-        bool isApproved
+        Guid id
     )
     {
-        var command = new ApproveAppointmentCommand(id, isApproved);
+        // Using the same command but passing 'true' to indicate approval
+        var command = new ApproveAppointmentCommand(id, true);
         await mediator.Send(command);
         return Results.Ok();
     }
+    
+    // Decline endpoint handler
+    private static async Task<IResult> Decline(
+        HttpContext context,
+        IMediator mediator,
+        Guid id
+    )
+    {
+        // Using the same command but passing 'false' to indicate a decline
+        var command = new ApproveAppointmentCommand(id, false);
+        await mediator.Send(command);
+        return Results.Ok();
+    }
+    
+    
 
     // Set Appointment Showed Up
     private static async Task<IResult> SetShowedUp(
         HttpContext context,
         IMediator mediator,
         Guid id,
+        Guid patientId,
         bool showedUp
     )
     {
@@ -200,5 +236,25 @@ public static class AppointmentEndpoints
         await mediator.Send(command);
         return Results.Ok();
     }
+    
+    // Get Patient Appointment History
+// Get Patient Appointment History
+    private static async Task<IResult> GetPatientAppointmentHistory(
+        HttpContext context,
+        IMediator mediator,
+        Guid patientId,
+        int page = 1 // Optionally provide a page parameter. The default value is set to 1.
+    )
+    {
+        // Construct your query. Adjust the command name and parameters if you use a different query.
+        var query = new GetPatientAppointmentHistoryQuery(patientId, page);
+    
+        // Send the query through MediatR.
+        var response = await mediator.Send(query);
+    
+        return Results.Ok(response);
+    }
+
+
 }
 

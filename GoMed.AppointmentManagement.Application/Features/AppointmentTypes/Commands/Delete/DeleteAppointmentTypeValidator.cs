@@ -1,7 +1,7 @@
 using FluentValidation;
 using GoMed.AppointmentManagement.Contracts.Interfaces;
 
-namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Commands.Delete.DeleteAppointmentType;
+namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Commands.Delete;
 
 public class DeleteAppointmentTypeValidator : AbstractValidator<DeleteAppointmentType>
 {

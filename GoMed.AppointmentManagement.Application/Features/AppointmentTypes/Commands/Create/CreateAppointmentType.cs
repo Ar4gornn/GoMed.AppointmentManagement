@@ -1,7 +1,7 @@
 using GoMed.AppointmentManagement.Application.Common.Models;
 using MediatR;
 
-namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Commands.Create.CreateAppointmentType;
+namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Commands.Create;
 
 public class CreateAppointmentType : IRequest<Result<int>>
 {

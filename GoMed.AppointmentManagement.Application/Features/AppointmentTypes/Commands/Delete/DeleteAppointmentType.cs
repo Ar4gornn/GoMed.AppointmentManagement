@@ -1,7 +1,7 @@
 using GoMed.AppointmentManagement.Application.Common.Models;
 using MediatR;
 
-namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Commands.Delete.DeleteAppointmentType;
+namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Commands.Delete;
 
 public class DeleteAppointmentType : IRequest<Result<int>>
 {

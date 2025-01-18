@@ -1,11 +1,8 @@
 using GoMed.AppointmentManagement.Application.Common.Models;
 using GoMed.AppointmentManagement.Contracts.Interfaces;
-using GoMed.AppointmentManagement.Domain.Events.Unavailability;
-using MassTransit;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
-namespace GoMed.AppointmentManagement.Application.Features.Unavailabilities.Command.Delete.DeleteUnavailability
+namespace GoMed.AppointmentManagement.Application.Features.Unavailabilities.Command.Delete
 {
     public class DeleteUnavailabilityCommandHandler(
         IApplicationDbContext dbContext,

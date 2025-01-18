@@ -1,35 +1,33 @@
+using GoMed.AppointmentManagement.Application.Common.Models;
 using GoMed.AppointmentManagement.Application.Features.Appointments.Dtos;
 using GoMed.AppointmentManagement.Contracts.Interfaces;
-
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace GoMed.AppointmentManagement.Application.Features.Appointments.Queries.Get.GetAppointmentByClinicIdQuery
 {
-    public class GetAppointmentByClinicIdQueryHandler : IRequestHandler<GetAppointmentByClinicIdQuery, List<ReadAppointmentDto>>
+    public class GetAppointmentByClinicIdQueryHandler(
+        IApplicationDbContext dbContext,
+        IAuthUserService authUserService
+    ) : IRequestHandler<GetAppointmentByClinicIdQuery, Result<List<ReadAppointmentDto>>>
     {
-        private readonly IApplicationDbContext _dbContext;
-        private readonly IAuthUserService _authUserService;
-
-        public GetAppointmentByClinicIdQueryHandler(IApplicationDbContext dbContext, IAuthUserService authUserService)
-        {
-            _dbContext = dbContext;
-            _authUserService = authUserService;
-        }
-
-        public async Task<List<ReadAppointmentDto>> Handle(GetAppointmentByClinicIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result<List<ReadAppointmentDto>>> Handle(
+            GetAppointmentByClinicIdQuery request,
+            CancellationToken cancellationToken)
         {
             // Check clinic access
-            if (!_authUserService.CanAccessClinic(request.ClinicId))
+            if (!authUserService.CanAccessClinic(request.ClinicId))
             {
-                throw new UnauthorizedAccessException(
-                    "You do not have permission to view appointments for this clinic.");
+                return Result<List<ReadAppointmentDto>>.Unauthorized(
+                    "Appointment.Unauthorized",
+                    "You do not have permission to view appointments for this clinic."
+                );
             }
 
-            var appointments = await _dbContext.Appointments
-                .Where(a => a.ClinicId == request.ClinicId &&
-                            a.StartAt >= request.StartDate &&
-                            a.EndAt <= request.EndDate)
+            var appointments = await dbContext.Appointments
+                .Where(a => a.ClinicId == request.ClinicId
+                            && a.StartAt >= request.StartDate
+                            && a.EndAt <= request.EndDate)
                 .Select(a => new ReadAppointmentDto
                 {
                     ProfessionalId = a.ProfessionalId,
@@ -45,7 +43,7 @@ namespace GoMed.AppointmentManagement.Application.Features.Appointments.Queries.
                 })
                 .ToListAsync(cancellationToken);
 
-            return appointments;
+            return Result<List<ReadAppointmentDto>>.Success(appointments);
         }
     }
 }

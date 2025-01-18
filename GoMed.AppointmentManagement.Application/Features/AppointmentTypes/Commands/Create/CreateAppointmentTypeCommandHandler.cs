@@ -1,10 +1,9 @@
 using GoMed.AppointmentManagement.Application.Common.Models;
 using GoMed.AppointmentManagement.Contracts.Interfaces;
 using GoMed.AppointmentManagement.Domain.Entities;
-using MassTransit;
 using MediatR;
 
-namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Commands.Create.CreateAppointmentType
+namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Commands.Create
 {
     public class CreateAppointmentTypeCommandHandler(
         IApplicationDbContext dbContext,

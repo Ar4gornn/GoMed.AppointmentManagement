@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Commands.Update.UpdateAppointmentType;
+namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Commands.Update;
 
 public class UpdateAppointmentTypeValidator : AbstractValidator<UpdateAppointmentType>
 {

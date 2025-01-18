@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace GoMed.AppointmentManagement.Application.Features.Unavailabilities.Command.Delete.DeleteUnavailability
+namespace GoMed.AppointmentManagement.Application.Features.Unavailabilities.Command.Delete
 {
     public class DeleteUnavailabilityValidator : AbstractValidator<DeleteUnavailability>
     {

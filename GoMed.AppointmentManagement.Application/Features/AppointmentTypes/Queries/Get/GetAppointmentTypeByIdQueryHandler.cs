@@ -4,7 +4,7 @@ using GoMed.AppointmentManagement.Contracts.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Queries.Get.GetAppointmentTypeById
+namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Queries.Get
 {
     public class GetAppointmentTypeByIdQueryHandler(
         IApplicationDbContext dbContext,

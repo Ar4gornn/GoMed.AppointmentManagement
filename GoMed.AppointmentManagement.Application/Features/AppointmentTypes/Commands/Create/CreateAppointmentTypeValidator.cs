@@ -1,10 +1,6 @@
 using FluentValidation;
-using GoMed.AppointmentManagement.Contracts.Interfaces;
-using GoMed.AppointmentManagement.Domain.Entities;
-using MassTransit.Futures.Contracts;
-using Microsoft.EntityFrameworkCore;
 
-namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Commands.Create.CreateAppointmentType;
+namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Commands.Create;
 
 public class CreateAppointmentTypeValidator : AbstractValidator<CreateAppointmentType>
 {

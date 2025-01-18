@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace GoMed.AppointmentManagement.Application.Features.Unavailabilities.Command.Update.UpdateUnavailability
+namespace GoMed.AppointmentManagement.Application.Features.Unavailabilities.Command.Update
 {
     public class UpdateUnavailabilityValidator : AbstractValidator<UpdateUnavailability>
     {

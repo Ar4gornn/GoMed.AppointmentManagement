@@ -1,10 +1,9 @@
 using GoMed.AppointmentManagement.Application.Common.Models;
 using GoMed.AppointmentManagement.Contracts.Interfaces;
-using GoMed.AppointmentManagement.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Set.SetAvailabilities
+namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Commands.Set
 {
     public class SetAvailabilitiesCommandHandler : IRequestHandler<SetAvailabilities, Result>
     {

@@ -2,7 +2,7 @@ using GoMed.AppointmentManagement.Application.Common.Models;
 using GoMed.AppointmentManagement.Domain.Entities;
 using MediatR;
 
-namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Get.GetAvailabilitiesByClinic
+namespace GoMed.AppointmentManagement.Application.Features.Availabilities.Get
 {
     public class GetAvailabilitiesByClinic : IRequest<Result<List<Availability>>>
     {

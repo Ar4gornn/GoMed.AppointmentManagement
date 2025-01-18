@@ -1,40 +1,25 @@
+using GoMed.AppointmentManagement.Application.Common.Models;
 using GoMed.AppointmentManagement.Application.Features.Appointments.Dtos;
 using GoMed.AppointmentManagement.Contracts.Interfaces;
 using GoMed.AppointmentManagement.Domain.Entities;
 using GoMed.AppointmentManagement.Domain.Enums;
-
 using MediatR;
 
 namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.Create.CreateAppointmentCommand
 {
-    public class CreateAppointmentCommandHandler : IRequestHandler<CreateAppointmentCommand, ReadAppointmentDto>
+    public class CreateAppointmentCommandHandler(
+        IApplicationDbContext dbContext,
+        IAuthUserService authUserService
+    ) : IRequestHandler<CreateAppointmentCommand, Result<ReadAppointmentDto>>
     {
-        private readonly IApplicationDbContext _dbContext;
-        private readonly IAuthUserService _authUserService;
-
-        public CreateAppointmentCommandHandler(IApplicationDbContext dbContext, IAuthUserService authUserService)
-        {
-            _dbContext = dbContext;
-            _authUserService = authUserService;
-        }
-
-        public async Task<ReadAppointmentDto> Handle(CreateAppointmentCommand request, CancellationToken cancellationToken)
+        public async Task<Result<ReadAppointmentDto>> Handle(CreateAppointmentCommand request, CancellationToken cancellationToken)
         {
             var dto = request.Dto;
 
-            // Check clinic access
-            if (!_authUserService.CanAccessClinic(dto.ClinicId))
+            if (!authUserService.CanAccessClinic(dto.ClinicId))
             {
-                throw new UnauthorizedAccessException(
-                    "You do not have permission to create an appointment in this clinic.");
+                return Result<ReadAppointmentDto>.Unauthorized("Appointment.Unauthorized", "You do not have permission to create this appointment.");
             }
-
-            // Optionally check patient access if you want to ensure the user 
-            // can create an appointment for the specified patient
-            // if (!_authUserService.CanAccessPatient(Guid.Parse(dto.PatientId))) 
-            // {
-            //     throw new UnauthorizedAccessException("You do not have permission to schedule for this patient.");
-            // }
 
             var appointment = new Appointment
             {
@@ -52,10 +37,10 @@ namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.
                 BookingChannel = BookingChannel.PatientBooking
             };
 
-            _dbContext.Appointments.Add(appointment);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            dbContext.Appointments.Add(appointment);
+            await dbContext.SaveChangesAsync(cancellationToken);
 
-            return new ReadAppointmentDto
+            return Result<ReadAppointmentDto>.Success(new ReadAppointmentDto
             {
                 ProfessionalId = appointment.ProfessionalId,
                 ClinicId = appointment.ClinicId,
@@ -67,7 +52,7 @@ namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.
                 Type = appointment.Type,
                 Notes = appointment.Notes,
                 ShowedUp = appointment.ShowedUp
-            };
+            });
         }
     }
 }

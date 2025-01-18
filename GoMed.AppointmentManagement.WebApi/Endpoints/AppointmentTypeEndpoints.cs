@@ -1,9 +1,9 @@
-using GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Commands.Create.CreateAppointmentType;
-using GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Commands.Delete.DeleteAppointmentType;
-using GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Commands.Update.UpdateAppointmentType;
+using GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Commands.Create;
+using GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Commands.Delete;
+using GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Commands.Update;
 using GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Dtos;
-using GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Queries.Get.GetAppointmentTypeById;
-using GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Queries.GetAll.GetAllAppointmentTypesQueries;
+using GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Queries.Get;
+using GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Queries.GetAll;
 using MediatR;
 
 namespace GoMed.AppointmentManagement.WebApi.Endpoints;
@@ -13,7 +13,7 @@ public static class AppointmentTypeEndpoints
     public static void AddAppointmentTypeEndpoints(this IEndpointRouteBuilder builder)
     {
         // Patient-related endpoints
-        var patientGroup = builder.MapGroup("api/v1/appointment-types/patients")
+        var patientGroup = builder.MapGroup("api/v1/patients/{patientId}/appointment-types")
             .WithTags("Patient AppointmentTypes")
             .WithOpenApi();
 
@@ -22,7 +22,7 @@ public static class AppointmentTypeEndpoints
             .Produces<List<ReadAppointmentTypeDto>>(StatusCodes.Status200OK);
 
         // Professional-related endpoints
-        var professionalGroup = builder.MapGroup("api/v1/appointment-types/professionals")
+        var professionalGroup = builder.MapGroup("api/v1/professionals/{professionalId}/appointment-types")
             .WithTags("Professional AppointmentTypes")
             .WithOpenApi();
 

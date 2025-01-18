@@ -1,7 +1,7 @@
 using GoMed.AppointmentManagement.Application.Common.Models;
 using MediatR;
 
-namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Commands.Update.UpdateAppointmentType;
+namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Commands.Update;
 
 public class UpdateAppointmentType : IRequest<Result<int>>
 {

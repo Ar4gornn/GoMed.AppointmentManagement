@@ -1,11 +1,9 @@
 using GoMed.AppointmentManagement.Application.Common.Models;
 using GoMed.AppointmentManagement.Contracts.Interfaces;
-using GoMed.AppointmentManagement.Domain.Events.AppointmentType;
-using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Commands.Delete.DeleteAppointmentType
+namespace GoMed.AppointmentManagement.Application.Features.AppointmentTypes.Commands.Delete
 {
     public class DeleteAppointmentTypeCommandHandler(
         IApplicationDbContext dbContext,

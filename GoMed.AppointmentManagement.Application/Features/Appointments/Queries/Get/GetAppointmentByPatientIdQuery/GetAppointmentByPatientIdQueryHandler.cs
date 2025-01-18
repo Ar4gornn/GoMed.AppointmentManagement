@@ -1,32 +1,30 @@
+using GoMed.AppointmentManagement.Application.Common.Models;
 using GoMed.AppointmentManagement.Application.Features.Appointments.Dtos;
 using GoMed.AppointmentManagement.Contracts.Interfaces;
-
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace GoMed.AppointmentManagement.Application.Features.Appointments.Queries.Get.GetAppointmentByPatientIdQuery
 {
-    public class GetAppointmentByPatientIdQueryHandler : IRequestHandler<GetAppointmentByPatientIdQuery, List<ReadAppointmentDto>>
+    public class GetAppointmentByPatientIdQueryHandler(
+        IApplicationDbContext dbContext,
+        IAuthUserService authUserService
+    ) : IRequestHandler<GetAppointmentByPatientIdQuery, Result<List<ReadAppointmentDto>>>
     {
-        private readonly IApplicationDbContext _dbContext;
-        private readonly IAuthUserService _authUserService;
-
-        public GetAppointmentByPatientIdQueryHandler(IApplicationDbContext dbContext, IAuthUserService authUserService)
-        {
-            _dbContext = dbContext;
-            _authUserService = authUserService;
-        }
-
-        public async Task<List<ReadAppointmentDto>> Handle(GetAppointmentByPatientIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result<List<ReadAppointmentDto>>> Handle(
+            GetAppointmentByPatientIdQuery request,
+            CancellationToken cancellationToken)
         {
             // Check patient access
-            if (!_authUserService.CanAccessPatient(request.PatientId))
+            if (!authUserService.CanAccessPatient(request.PatientId))
             {
-                throw new UnauthorizedAccessException(
-                    "You do not have permission to view this patient's appointments.");
+                return Result<List<ReadAppointmentDto>>.Unauthorized(
+                    "Appointment.Unauthorized",
+                    "You do not have permission to view this patient's appointments."
+                );
             }
 
-            var patientAppointments = await _dbContext.Appointments
+            var patientAppointments = await dbContext.Appointments
                 .Where(a => a.PatientId == request.PatientId)
                 .Select(a => new ReadAppointmentDto
                 {
@@ -43,7 +41,7 @@ namespace GoMed.AppointmentManagement.Application.Features.Appointments.Queries.
                 })
                 .ToListAsync(cancellationToken);
 
-            return patientAppointments;
+            return Result<List<ReadAppointmentDto>>.Success(patientAppointments);
         }
     }
 }

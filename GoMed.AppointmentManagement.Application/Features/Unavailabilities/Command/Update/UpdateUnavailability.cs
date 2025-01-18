@@ -1,7 +1,7 @@
 using GoMed.AppointmentManagement.Application.Common.Models;
 using MediatR;
 
-namespace GoMed.AppointmentManagement.Application.Features.Unavailabilities.Command.Update.UpdateUnavailability
+namespace GoMed.AppointmentManagement.Application.Features.Unavailabilities.Command.Update
 {
     public class UpdateUnavailability : IRequest<Result>
     {

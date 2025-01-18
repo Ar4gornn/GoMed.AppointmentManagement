@@ -1,42 +1,28 @@
+using GoMed.AppointmentManagement.Application.Common.Models;
 using GoMed.AppointmentManagement.Contracts.Interfaces;
 using GoMed.AppointmentManagement.Domain.Events;
-
 using MediatR;
 
 namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.Set.SetAppointmentShowedUpCommand
 {
-    public class SetAppointmentShowedUpCommandHandler : IRequestHandler<SetAppointmentShowedUpCommand>
+    public class SetAppointmentShowedUpCommandHandler(
+        IApplicationDbContext dbContext,
+        IMediator mediator,
+        IAuthUserService authUserService
+    ) : IRequestHandler<SetAppointmentShowedUpCommand, Result>
     {
-        private readonly IApplicationDbContext _dbContext;
-        private readonly IMediator _mediator;
-        private readonly IAuthUserService _authUserService;
-
-        public SetAppointmentShowedUpCommandHandler(
-            IApplicationDbContext dbContext,
-            IMediator mediator,
-            IAuthUserService authUserService)
+        public async Task<Result> Handle(SetAppointmentShowedUpCommand request, CancellationToken cancellationToken)
         {
-            _dbContext = dbContext;
-            _mediator = mediator;
-            _authUserService = authUserService;
-        }
-
-        public async Task Handle(SetAppointmentShowedUpCommand request, CancellationToken cancellationToken)
-        {
-            var appointment = await _dbContext.Appointments.FindAsync(
-                new object?[] { request.AppointmentId },
-                cancellationToken);
+            var appointment = await dbContext.Appointments.FindAsync(new object?[] { request.AppointmentId }, cancellationToken);
 
             if (appointment == null)
             {
-                throw new KeyNotFoundException($"Appointment with Id {request.AppointmentId} not found.");
+                return Result.NotFound("Appointment.NotFound", $"Appointment with Id {request.AppointmentId} not found.");
             }
 
-            // Check clinic access
-            if (!_authUserService.CanAccessClinic(appointment.ClinicId))
+            if (!authUserService.CanAccessClinic(appointment.ClinicId))
             {
-                throw new UnauthorizedAccessException(
-                    "You do not have permission to set showed-up status for an appointment in this clinic.");
+                return Result.Unauthorized("Appointment.Unauthorized", "You do not have permission to update this appointment.");
             }
 
             appointment.ShowedUp = request.ShowedUp;
@@ -44,15 +30,17 @@ namespace GoMed.AppointmentManagement.Application.Features.Appointments.Command.
             if (request.ShowedUp)
             {
                 appointment.Status = Domain.Enums.AppointmentStatus.Completed;
-                await _mediator.Publish(new AppointmentCheckOutEvent(appointment), cancellationToken);
+                await mediator.Publish(new AppointmentCheckOutEvent(appointment), cancellationToken);
             }
             else
             {
-                await _mediator.Publish(new AppointmentNoShowEvent(appointment), cancellationToken);
+                await mediator.Publish(new AppointmentNoShowEvent(appointment), cancellationToken);
             }
 
-            _dbContext.Appointments.Update(appointment);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            dbContext.Appointments.Update(appointment);
+            await dbContext.SaveChangesAsync(cancellationToken);
+
+            return Result.Success();
         }
     }
 }
