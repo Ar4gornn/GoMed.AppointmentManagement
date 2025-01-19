@@ -488,3 +488,7 @@ $RECYCLE.BIN/
 # Vim temporary swap files
 *.swp
 .azure
+
+*.DotSettings
+GoMed.AppointmentManagement.Persistence/Migrations/
+
