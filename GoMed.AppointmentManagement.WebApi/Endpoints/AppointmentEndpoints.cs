@@ -1,3 +1,4 @@
+using GoMed.AppointmentManagement.Application.Common.Models;
 using GoMed.AppointmentManagement.Application.Features.Appointments.Command.Approve;
 using GoMed.AppointmentManagement.Application.Features.Appointments.Command.Cancel;
 using GoMed.AppointmentManagement.Application.Features.Appointments.Command.Create.CreateAppointmentCommand;
@@ -106,25 +107,27 @@ public static class AppointmentEndpoints
         return Results.Ok(response);
     }
     
-    // Create Appointment
+// Create Appointment
     private static async Task<IResult> Create(
         HttpContext context,
         IMediator mediator,
         CreateAppointmentDto requestDto
     )
     {
-        var command = new CreateAppointmentCommand(requestDto);
-        var response = await mediator.Send(command);
+        // Explicitly define the type of response to ensure correct typing
+        Result<ReadAppointmentDto> response = await mediator.Send(new CreateAppointmentCommand(requestDto));
 
-        // Here we assume 'response' is of type Result<ReadAppointmentDto>
-        if (!response.Succeeded)
+        // Handle failure
+        if (!response.IsSuccess)
         {
-            return Results.Problem(response.Message);
+            return Results.Problem(response.Error?.Message); // Access the error message from the Error property
         }
 
-        // Use 'response.Data.ClinicId' instead of 'response.ClinicId'
-        return Results.Created($"/api/v1/appointments/{response.Data.ClinicId}", response.Data);
+        // Handle success
+        return Results.Created($"/api/v1/appointments/{response.Value!.ClinicId}", response.Value);
     }
+
+
 
 
     // Update Appointment

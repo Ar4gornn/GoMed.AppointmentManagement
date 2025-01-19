@@ -25,14 +25,20 @@ namespace GoMed.AppointmentManagement.Application.Features.Unavailabilities.Quer
             // Check clinic access
             if (!_authUserService.CanAccessClinic(request.ClinicId))
             {
-                return Result<List<ReadUnavailabilityDto>>.Unauthorized("Unavailability.Unauthorized",
-                    "You do not have permission to view unavailabilities for this clinic.");
+                return Result<List<ReadUnavailabilityDto>>.Unauthorized(
+                    "Unavailability.Unauthorized",
+                    "You do not have permission to view unavailabilities for this clinic."
+                );
             }
-
             // TODO: Query StartAt between From To 
+            // Filter by ClinicId and also where StartAt is between From and To
             var results = await _dbContext.Unavailabilities
                 .AsNoTracking()
-                .Where(u => u.ClinicId == request.ClinicId)
+                .Where(u =>
+                    u.ClinicId == request.ClinicId &&
+                    u.StartAt >= request.From && 
+                    u.StartAt <= request.To
+                )
                 .Select(u => new ReadUnavailabilityDto
                 {
                     Id = u.Id,
@@ -47,3 +53,4 @@ namespace GoMed.AppointmentManagement.Application.Features.Unavailabilities.Quer
         }
     }
 }
+

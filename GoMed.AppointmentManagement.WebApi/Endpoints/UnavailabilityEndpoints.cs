@@ -17,49 +17,51 @@ public static class UnavailabilityEndpoints
             .WithTags("Clinic Unavailabilities")
             .WithOpenApi();
 
-        // GET all unavailabilities by clinic
-        clinicGroup.MapGet("/{clinicId:guid}", GetByClinic)
+        // GET all unavailabilities for a clinic
+        clinicGroup.MapGet("", GetByClinic)  // no extra route segment
             .Produces<List<ReadUnavailabilityDto>>(StatusCodes.Status200OK);
 
         // GET unavailability by Id
-        clinicGroup.MapGet("/{id:int}/clinics/{clinicId:guid}", GetById)
+        clinicGroup.MapGet("/{id:int}", GetById)  // just /{id:int}
             .Produces<ReadUnavailabilityDto>(StatusCodes.Status200OK);
 
-
         // CREATE unavailability
-        clinicGroup.MapPost("/", Create)
+        clinicGroup.MapPost("", Create)           // no extra route segment
             .Produces<int>(StatusCodes.Status201Created);
 
         // UPDATE unavailability
-        clinicGroup.MapPut("/{id:int}", Update)
+        clinicGroup.MapPut("/{id:int}", Update)   // just /{id:int}
             .Produces(StatusCodes.Status200OK);
 
         // DELETE unavailability
-        clinicGroup.MapDelete("/{id:int}/clinics/{clinicId:guid}", Delete)
+        clinicGroup.MapDelete("/{id:int}", Delete)  // just /{id:int}
             .Produces(StatusCodes.Status200OK);
+
     }
 
     private static async Task<IResult> GetByClinic(
         HttpContext context,
         IMediator mediator,
-        Guid clinicId
+        Guid clinicId 
     )
     {
         var request = new GetUnavailabilitiesByClinic
         {
             ClinicId = clinicId
+            
         };
 
         var response = await mediator.Send(request);
-        if (!response.IsSuccess) return response.ToIResult();
-        return Results.Ok(response.Value);
+        return response.IsSuccess
+            ? Results.Ok(response.Value)
+            : response.ToIResult();
     }
 
     private static async Task<IResult> GetById(
         HttpContext context,
         IMediator mediator,
-        int id,
-        Guid clinicId
+        int id,       
+        Guid clinicId 
     )
     {
         var request = new GetUnavailabilityById
@@ -69,8 +71,9 @@ public static class UnavailabilityEndpoints
         };
 
         var response = await mediator.Send(request);
-        if (!response.IsSuccess) return response.ToIResult();
-        return Results.Ok(response.Value);
+        return response.IsSuccess
+            ? Results.Ok(response.Value)
+            : response.ToIResult();
     }
 
     private static async Task<IResult> Create(
